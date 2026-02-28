@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module debug_handler_common &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=de505bba"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Module handle_unicode_common" href="handle_unicode_common.html" />
+    <link rel="prev" title="Module textan_cip1_cip2" href="textan_cip1_cip2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module debug_handler_common</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#diagramme-de-classe">Diagramme de classe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-debug_handler_common">Code du module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#debug_handler_common.DebugHandler"><code class="docutils literal notranslate"><span class="pre">DebugHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.print_debug_info"><code class="docutils literal notranslate"><span class="pre">DebugHandler.print_debug_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.print_general_exception"><code class="docutils literal notranslate"><span class="pre">DebugHandler.print_general_exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.print_timeout_exception"><code class="docutils literal notranslate"><span class="pre">DebugHandler.print_timeout_exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.set_start_time"><code class="docutils literal notranslate"><span class="pre">DebugHandler.set_start_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.set_start_time2"><code class="docutils literal notranslate"><span class="pre">DebugHandler.set_start_time2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.set_student_cip"><code class="docutils literal notranslate"><span class="pre">DebugHandler.set_student_cip()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.start_execution_timing"><code class="docutils literal notranslate"><span class="pre">DebugHandler.start_execution_timing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.start_timeout"><code class="docutils literal notranslate"><span class="pre">DebugHandler.start_timeout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.stop_execution_timing"><code class="docutils literal notranslate"><span class="pre">DebugHandler.stop_execution_timing()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.stop_execution_timing2"><code class="docutils literal notranslate"><span class="pre">DebugHandler.stop_execution_timing2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug_handler_common.DebugHandler.timeout_handler"><code class="docutils literal notranslate"><span class="pre">DebugHandler.timeout_handler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#debug_handler_common.DebugHandlerTimeOutException"><code class="docutils literal notranslate"><span class="pre">DebugHandlerTimeOutException</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module debug_handler_common</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/debug_handler_common.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <a class="reference internal image-reference" href="_images/UdeS_logo_h_pms347-crop.jpg"><img alt="_images/UdeS_logo_h_pms347-crop.jpg" src="_images/UdeS_logo_h_pms347-crop.jpg" style="width: 200px;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="module-debug-handler-common">
+<h1>Module debug_handler_common<a class="headerlink" href="#module-debug-handler-common" title="Lien vers cette rubrique"></a></h1>
+<section id="diagramme-de-classe">
+<h2>Diagramme de classe<a class="headerlink" href="#diagramme-de-classe" title="Lien vers cette rubrique"></a></h2>
+<a class="reference internal image-reference" href="_images/classes_debug_handler_common.png"><img alt="_images/classes_debug_handler_common.png" src="_images/classes_debug_handler_common.png" style="width: 1000.0000000000001px; height: 361.46971201588883px;" />
+</a>
+</section>
+<section id="module-debug_handler_common">
+<span id="code-du-module"></span><h2>Code du module<a class="headerlink" href="#module-debug_handler_common" title="Lien vers cette rubrique"></a></h2>
+<p>Code utilitaire pour gérer les exceptions et mesurer approximativement le temps d’exécution</p>
+<p>Copyright 2018-2026 F. Mailhot</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">debug_handler_common.</span></span><span class="sig-name descname"><span class="pre">DebugHandler</span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe à utiliser pour détecter et gérer les exceptions dans le code étudiant :</p>
+<p>Copyright 2024-2026 F. Mailhot</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.print_debug_info">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_debug_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.print_debug_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.print_debug_info" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Méthode statique pour indiquer où a eu lieu une exception :</dt><dd><ul class="simple">
+<li><p>Accède au « stack trace »</p></li>
+<li><p>Imprime le type d’exception, la valeur, la ligne de code et une portion du « stack trace »</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>(</strong><strong>void</strong><strong>)</strong> – Toute l’information imprimée provient du « stack trace »</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.print_general_exception">
+<span class="sig-name descname"><span class="pre">print_general_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.print_general_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.print_general_exception" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Méthode pour indiquer (imprimer) qu’une exception arbitraire a eu lieu :</dt><dd><ul class="simple">
+<li><p>L’information au sujet de l’exception (son type, la ligne de code où elle a eu lieu) sera imprimée</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>(void) : Tout est compris dans l’objet</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.print_timeout_exception">
+<span class="sig-name descname"><span class="pre">print_timeout_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.print_timeout_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.print_timeout_exception" title="Lien vers cette définition"></a></dt>
+<dd><p>Méthode pour imprimer l’info d’une exception de temps d’exécution trop grand</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Tout est compris dans l’objet</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.set_start_time">
+<span class="sig-name descname"><span class="pre">set_start_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.set_start_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.set_start_time" title="Lien vers cette définition"></a></dt>
+<dd><p>Temps de début de l’exécution du code étudiant.  Permet de mesurer approximativement la performance</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Ne fait que mémoriser le temps courant</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.set_start_time2">
+<span class="sig-name descname"><span class="pre">set_start_time2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.set_start_time2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.set_start_time2" title="Lien vers cette définition"></a></dt>
+<dd><p>Temps de début de l’exécution du code étudiant.  Permet de mesurer approximativement la performance</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Ne fait que mémoriser le temps courant</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.set_student_cip">
+<span class="sig-name descname"><span class="pre">set_student_cip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student_cip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.set_student_cip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.set_student_cip" title="Lien vers cette définition"></a></dt>
+<dd><p>Méthode qui permet d’associer le(s) cip(s) au débogage du code courant</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>student_cip (str) : cip associé au code étudiant qui sera exécuté</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.start_execution_timing">
+<span class="sig-name descname"><span class="pre">start_execution_timing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.start_execution_timing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.start_execution_timing" title="Lien vers cette définition"></a></dt>
+<dd><p>Démarre le chronomètre pour identifier une exécution trop longue, conserve le temps de départ</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Tout est compris dans l’objet</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.start_timeout">
+<span class="sig-name descname"><span class="pre">start_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.start_timeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.start_timeout" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Démarre un décompte temporel (valeur en secondes dans timeout) :</dt><dd><ul class="simple">
+<li><p>Détecte du code qui prend trop de temps à s’exécuter</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>timeout (int) : La valeur du délai</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, l’alarme est démarrée et sera déclenchée au besoin</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.stop_execution_timing">
+<span class="sig-name descname"><span class="pre">stop_execution_timing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.stop_execution_timing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.stop_execution_timing" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule le temps total d’exécution</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : L’objet est utilisé pour conserver le temps courant</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.stop_execution_timing2">
+<span class="sig-name descname"><span class="pre">stop_execution_timing2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.stop_execution_timing2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.stop_execution_timing2" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule le temps total d’exécution</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : L’objet est utilisé pour conserver le temps courant</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandler.timeout_handler">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timeout_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandler.timeout_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandler.timeout_handler" title="Lien vers cette définition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="debug_handler_common.DebugHandlerTimeOutException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">debug_handler_common.</span></span><span class="sig-name descname"><span class="pre">DebugHandlerTimeOutException</span></span><a class="reference internal" href="_modules/debug_handler_common.html#DebugHandlerTimeOutException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#debug_handler_common.DebugHandlerTimeOutException" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Cette classe définit un nouveau type d’exception, utilisé pour capturer les problèmes d’exécution trop longue
+dans le code étudiant</p>
+<p>Copyright 2024-2026 F. Mailhot</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation créée le 19 févr. 2026.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="textan_cip1_cip2.html" class="btn btn-neutral float-left" title="Module textan_cip1_cip2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="handle_unicode_common.html" class="btn btn-neutral float-right" title="Module handle_unicode_common" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

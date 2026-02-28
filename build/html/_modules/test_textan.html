@@ -1,0 +1,995 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>test_textan &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=de505bba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">test_textan</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de test_textan</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Programme python pour l&#39;évaluation du code de détection des auteurs et de génération de textes</span>
+
+<span class="sd">    Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">test_textan_parsing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParsingClassTextAn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">test_textan_command</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">text_beautifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextBeautifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PrintUtil</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrintUtil</span>
+
+
+<div class="viewcode-block" id="TestTextAn">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TestTextAn</span><span class="p">(</span><span class="n">ParsingClassTextAn</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classe à utiliser pour valider la résolution de la problématique :</span>
+<span class="sd">        - Contient tout le nécessaire pour tester la problématique.</span>
+
+<span class="sd">    Pour valider la solution de la problématique, effectuer :</span>
+<span class="sd">        - python test_textan.py -help (Indique tous les arguments et options disponibles)</span>
+<span class="sd">        - Vous pouvez aussi modifier le fichier test_textan_config.yml</span>
+
+<span class="sd">    Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TestTextAn.add_cwd_to_sys_path">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.add_cwd_to_sys_path">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_cwd_to_sys_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ajoute le répertoire d&#39;exécution local aux chemins utilisés par le système.</span>
+<span class="sd">           Sinon, si test_textan.py est un lien symbolique, les fichiers textan_CIP1_CIP2.py ne sont pas trouvés</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Utilisation des informations système</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, le répertoire d&#39;exécution est ajouté au chemin système</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.sort_author_distance">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.sort_author_distance">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sort_author_distance</span><span class="p">(</span><span class="n">author_res</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le deuxième élément du vecteur (auteur, proximité) (utilisé pour le tri de la liste des auteurs)</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            ([str, float]) : Liste des auteurs et valeur de proximité avec le texte inconnu</span>
+<span class="sd">            (résultat du produit scalaire) pour chacun des auteurs</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (float) : Valeur de la proximité de l&#39;auteur avec le texte inconnu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">author_res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+    <span class="c1"># Si mode verbose, refléter les valeurs des paramètres passés sur la ligne de commande</span>
+<div class="viewcode-block" id="TestTextAn.print_params">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.print_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mode verbose, imprime l&#39;ensemble des paramètres utilisés pour ce test :</span>
+<span class="sd">            - Valeur des paramètres par défaut s&#39;ils n&#39;ont pas été modifiés sur la ligne de commande</span>
+<span class="sd">            - Ensemble des tests demandés</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Ne fait qu&#39;imprimer les valeurs contenues dans self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">v</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Mode verbose: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cip</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">f</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Fichier inconnu à étudier: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Chemin complet de l&#39;oeuvre inconnue: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Liste des fichiers inconnus à étudier: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">F</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Fichiers inconnus:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">oeuvre</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">oeuvre</span><span class="p">)</span>
+
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Calcul avec des &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-grammes&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">K</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">K</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Le premier ngramme le plus fréquent sera trouvé&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Le &quot;</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;e ngramme le plus fréquent sera trouvé&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Création d&#39;un fichier aléatoire&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Création de multiples fichiers aléatoires&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G_fusion</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G_fusion</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Création d&#39;un fichier aléatoire avec auteurs multiples&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G_fusion</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G_fusion</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">)):</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Nom du fichier aléatoire: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">noPonc</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Retrait des signes de ponctuation&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Conservation des signes de ponctuation&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Génération d&#39;un texte de &quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot; mots, pour les auteurs: &quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span>
+            <span class="p">)</span>
+            <span class="n">auteurs_string</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Le nom du fichier généré sera: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gen_file_name</span><span class="p">(</span><span class="n">auteurs_string</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">recursion</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Récursion maximale: &quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">getrecursionlimit</span><span class="p">())</span>
+
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Temps d&#39;exécution maximal: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="s2">&quot; secondes&quot;</span><span class="p">)</span>
+
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Calcul avec les auteurs du répertoire: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Liste des auteurs:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">:</span>
+            <span class="n">aut</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">aut</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">compare_auteurs</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">La proximité des textes de l&#39;ensemble des auteurs sera calculée&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.setup_instance_param">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.setup_instance_param">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setup_instance_param</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Définit les paramètres de l&#39;instance (étudiante) à tester</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Ajout de l&#39;information nécessaire dans l&#39;instance à tester de la classe TextAn sous étude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">set_ngram_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">set_aut_dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">auteurs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_params</span><span class="p">()</span>  <span class="c1"># Imprime l&#39;état de l&#39;instance (si le mode verbose a été utilisé sur la ligne de commande)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.get_gen_file_name">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.get_gen_file_name">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_gen_file_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Définit le nom du fichier à générer</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (str) : Nom de l&#39;auteur à utiliser dans le nom du fichier</span>
+<span class="sd">        Returns :</span>
+<span class="sd">            name (str) : Nom du fichier à générer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cip</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">auteur</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_name</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_name</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_name</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;CIP&gt;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cip</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;AUT&gt;&quot;</span><span class="p">,</span> <span class="n">auteur</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;DATE&gt;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()))</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;HR&gt;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">hour</span><span class="p">))</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;MIN&gt;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">minute</span><span class="p">))</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;SEC&gt;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">second</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.get_cips">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.get_cips">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cips</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lit le fichier etudiants.txt, trouve les CIPs, et retourne la liste</span>
+<span class="sd">           Le CIP est obtenu du fichier etudiants.txt, dans le répertoire courant</span>
+<span class="sd">            ou tel qu&#39;indiqué en paramètre (option -dir_code)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, tous les cips sont inclus dans la liste self.cips</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cip_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_code</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">etudiants</span>
+        <span class="n">cip_list</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">cip_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">cip_list</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;#&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="s2">&quot;%&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">student_cip</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">student_cip</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.import_textan_cip">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.import_textan_cip">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">import_textan_cip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">import_cip</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Importe le fichier textan_CIP1_CIP2.py, où &quot;CIP1_CIP2&quot; est passé dans le paramètre import_cip</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            import_cip (str) : Contient &quot;CIP1_CIP2&quot;, les cips pour le code à tester</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, le module textan_CIP1_CIP2 est importé et remplace le précédent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;init_module&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_modules</span><span class="p">:</span>
+            <span class="c1"># Deuxième appel (ou subséquents) : enlever tous les modules supplémentaires</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">m</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_modules</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Premier appel : identifier tous les modules déjà présents</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_modules</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cip</span> <span class="o">=</span> <span class="n">import_cip</span>
+        <span class="n">textan_name</span> <span class="o">=</span> <span class="s2">&quot;textan_&quot;</span> <span class="o">+</span> <span class="n">import_cip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">textan_name</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.check_something_to_do">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.check_something_to_do">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_something_to_do</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Vérifie que les paramètres d&#39;entrée indiquent quelque chose à faire</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Toute l&#39;information nécessaire est présente dans l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, le champ something_to_do indique le statut.  S&#39;il n&#39;y a rien à faire, sortie</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">something_to_do</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text</span>
+                <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span>
+                <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_get_kth_ngram</span>
+                <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_print_auteur_distance</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">something_to_do</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;Aucune action à effectuer. Utiliser un paramètre pour:&quot;</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> - Générer un texte aléatoire (-a Auteur -g) ou (-G)&quot;</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> - Trouver l&#39;auteur d&#39;un texte inconnu (-f texte_inconnu.txt)&quot;</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> - Trouver le k-ième n-gramme le plus fréquent d&#39;un auteur (-F k)&quot;</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;Au besoin, utiliser le fichier de configuration test_textan_config.yml&quot;</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.load_cip_code">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.load_cip_code">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_cip_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">student_cip</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Charge le code étudiant en mémoire, initialise l&#39;instance, initialise le débogage</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            student_cip (str) : Cips de l&#39;ensemble des membres de l&#39;équipe d&#39;APP</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné : au retour, le code étudiant a été chargé en mémoire</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">import_textan_cip</span><span class="p">(</span>
+            <span class="n">student_cip</span>
+        <span class="p">)</span>  <span class="c1"># Chargement du code des étudiants identifiés par cip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan_module</span><span class="o">.</span><span class="n">TextAn</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">cip</span> <span class="o">=</span> <span class="n">student_cip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_instance_param</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">start_execution_timing</span><span class="p">()</span>  <span class="c1"># Permet de mesurer le temps d&#39;exécution du code étudiant</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">set_student_cip</span><span class="p">(</span>
+            <span class="n">student_cip</span>
+        <span class="p">)</span>  <span class="c1"># Indique le cip courant au gestionnaire de débogage</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.analyze">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.analyze">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Effectue l&#39;analyse des textes fournis (calcul des fréquences pour chacun des auteurs) avec le code étudiant</span>
+<span class="sd">                - Appelle la méthode d&#39;analyse des textes self.textan.analyze() fournie par les étudiants</span>
+<span class="sd">                - Normalise les vecteurs de chacun des auteurs avec la méthode textan.normalize_ngrams_auteurs</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné : au retour, les textes des auteurs ont été analysés</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">analyze</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">normalize_ngrams_auteurs</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.join_dicts">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.join_dicts">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">join_dicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalized_auteurs_ngrams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Crée un dictionnaire qui combine les statistiques de tous les auteurs</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            normalized_auteurs_ngrams ([dict]) : tableau de dictionnaires des auteurs (normalisés)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            res_dict (dict) : Dictionnaire normalisé de la somme des dictionnaires des auteurs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">auteur</span> <span class="ow">in</span> <span class="n">normalized_auteurs_ngrams</span><span class="p">:</span>
+            <span class="n">dict_auteur</span> <span class="o">=</span> <span class="n">normalized_auteurs_ngrams</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">normalize_vector</span><span class="p">(</span><span class="n">dict_auteur</span><span class="p">)</span>
+            <span class="n">res_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">add_dict</span><span class="p">(</span><span class="n">res_dict</span><span class="p">,</span> <span class="n">dict_auteur</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">normalize_vector</span><span class="p">(</span><span class="n">res_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res_dict</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.get_unused_ngram_stats">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.get_unused_ngram_stats">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_unused_ngram_stats</span><span class="p">(</span><span class="n">use_textan</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">auteur</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule le nombre de n-grammes de la nouvelle oeuvre qui n&#39;existent pas pour l&#39;auteur potentiel</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            use_textan (TextAn) : Utilise le code golden ou le code local</span>
+<span class="sd">            filepath (str) : Path du fichier de texte</span>
+<span class="sd">            auteur (str) : Auteur du texte</span>
+<span class="sd">        Returns :</span>
+<span class="sd">            (float) : La proportion de n-grammes de la nouvelle oeuvre n&#39;existant pas pour l&#39;auteur</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dict_oeuvre</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">use_textan</span><span class="o">.</span><span class="n">compute_ngram_stats</span><span class="p">(</span><span class="n">dict_oeuvre</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+        <span class="n">ngram_number</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict_oeuvre</span><span class="p">)</span> <span class="o">|</span> <span class="mi">1</span>
+        <span class="n">found_author_dict</span> <span class="o">=</span> <span class="n">use_textan</span><span class="o">.</span><span class="n">ngrams_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span>
+        <span class="n">unknown_ngrams_dict</span> <span class="o">=</span> <span class="n">use_textan</span><span class="o">.</span><span class="n">subtract_dict</span><span class="p">(</span><span class="n">dict_oeuvre</span><span class="p">,</span> <span class="n">found_author_dict</span><span class="p">)</span>
+        <span class="n">unknown_ngram_number</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_ngrams_dict</span><span class="p">)</span>
+        <span class="n">ratio_unknown_ngram_number</span> <span class="o">=</span> <span class="n">unknown_ngram_number</span> <span class="o">/</span> <span class="n">ngram_number</span>
+        <span class="k">return</span> <span class="n">ratio_unknown_ngram_number</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.shorten_filename">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.shorten_filename">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shorten_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne un nom écourté, de longueur maximum max_size.</span>
+<span class="sd">            - Les trois derniers caractères du nom écourté seront &quot;...&quot;</span>
+<span class="sd">            - Si le fichier est déjà de taille plus petite ou égale au maximum, retourne une copie entière</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            filename (str) : Nom du fichier (avec path complet)</span>
+<span class="sd">            max_size (int) : taille maximum du nom à retourner</span>
+<span class="sd">        Returns :</span>
+<span class="sd">            (str) : Le fichier écourté, se terminant par &quot;...&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_size</span><span class="p">:</span>
+            <span class="n">shorter_filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shorter_filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[:</span> <span class="n">max_size</span> <span class="o">-</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
+        <span class="k">return</span> <span class="n">shorter_filename</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.get_proximity_stats">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.get_proximity_stats">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_proximity_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_number</span><span class="p">,</span> <span class="n">analysis_results</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule la distance moyenne des résultats obtenus pendant l&#39;analyse d&#39;une nouvelle oeuvre :</span>
+<span class="sd">            - Calcule la distance moyenne (cosinus) entre les auteurs potentiels identifiés et la nouvelle oeuvre</span>
+<span class="sd">            - Calcule l&#39;écart type du cosinus entre les auteurs potentiels identifiés et la nouvelle oeuvre</span>
+<span class="sd">            - Calcule le score Z pour l&#39;auteur le plus probable</span>
+<span class="sd">            - Si aucune distance n&#39;a été passée en paramètre, retourner des valeurs par défaut</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            word_number (int) : Nombre de mots générés dans le fichier de la nouvelle oeuvre</span>
+<span class="sd">            analysis_results (Liste[(string, float)]) : Liste de tuples (auteurs, niveau de proximité), où la proximité</span>
+<span class="sd">                est un nombre entre 0 et 1)</span>
+<span class="sd">        Returns :</span>
+<span class="sd">            (str, float, float, float, float) : Retourne le nom de l&#39;auteur et les statistiques obtenues</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_analysis_results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">word_number</span> <span class="ow">and</span> <span class="n">analysis_results</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">analysis_results</span><span class="p">):</span>
+            <span class="n">analysis_results</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_author_distance</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">distance_moyenne</span> <span class="o">=</span> <span class="p">[</span><span class="n">one_author</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">one_author</span> <span class="ow">in</span> <span class="n">analysis_results</span><span class="p">]</span>
+            <span class="n">distance_moyenne_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">distance_moyenne</span><span class="p">)</span>
+            <span class="n">val_moyenne_author</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">distance_moyenne_array</span><span class="p">)</span>
+            <span class="n">std_dev_author</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">distance_moyenne_array</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">auteur_num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">analysis_results</span><span class="p">)):</span>
+                <span class="n">processed_results</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">new_analysis_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">processed_results</span><span class="p">)</span>
+                <span class="n">author</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="n">auteur_num</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">val_author</span> <span class="o">=</span> <span class="n">analysis_results</span><span class="p">[</span><span class="n">auteur_num</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">z_score_author</span> <span class="o">=</span> <span class="p">(</span><span class="n">val_author</span> <span class="o">-</span> <span class="n">val_moyenne_author</span><span class="p">)</span> <span class="o">/</span> <span class="n">std_dev_author</span>
+                <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author</span>
+                <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;val_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_author</span>
+                <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;val_moyenne_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_moyenne_author</span>
+                <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;z_score_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_score_author</span>
+                <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;std_dev_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">std_dev_author</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">processed_results</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">new_analysis_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">processed_results</span><span class="p">)</span>
+            <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span>
+            <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;val_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;val_moyenne_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;z_score_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">processed_results</span><span class="p">[</span><span class="s1">&#39;std_dev_author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">new_analysis_results</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.gen_from_dict">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.gen_from_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gen_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">gen_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prépare la génération d&#39;un texte aléatoire et appelle la génération fournie par les étudiants:</span>
+<span class="sd">            - Prépare le nom du fichier à créer</span>
+<span class="sd">            - Ouvre le fichier en écriture</span>
+<span class="sd">            - Appelle la méthode de création de texte aléatoire</span>
+<span class="sd">            - Ferme le fichier créé</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (str) : nom de l&#39;auteur (ou des auteurs) ciblé</span>
+<span class="sd">            gen_dict (dict) : dictionnaire de n-grammes utilisé pour la génération</span>
+<span class="sd">        Returns :</span>
+<span class="sd">            (list[Any]) : Retourne une liste d&#39;informations sur le fichier généré</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gen_file_name</span><span class="p">(</span><span class="n">auteur</span><span class="p">)</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">to_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">gen_text_dict</span><span class="p">(</span><span class="n">gen_dict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_size</span><span class="p">,</span> <span class="n">to_file</span><span class="p">)</span>
+        <span class="n">to_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">beautify</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_beautifier</span><span class="o">.</span><span class="n">prettify_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+        <span class="n">res_table</span> <span class="o">=</span> <span class="p">[</span><span class="n">auteur</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shorten_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="s2">&quot;Fichier généré&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">golden</span><span class="p">:</span>
+            <span class="n">use_textan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">golden</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">use_textan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span>
+
+        <span class="n">word_number</span> <span class="o">=</span> <span class="n">use_textan</span><span class="o">.</span><span class="n">get_text_size</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">analysis_results</span> <span class="o">=</span> <span class="n">use_textan</span><span class="o">.</span><span class="n">find_author</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+        <span class="n">new_analysis_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_proximity_stats</span><span class="p">(</span><span class="n">word_number</span><span class="p">,</span> <span class="n">analysis_results</span><span class="p">)</span>
+        <span class="n">author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;author&#39;</span><span class="p">]</span>
+        <span class="n">val_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;val_author&#39;</span><span class="p">]</span>
+        <span class="n">val_moyenne_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;val_moyenne_author&#39;</span><span class="p">]</span>
+        <span class="n">std_dev_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;std_dev_author&#39;</span><span class="p">]</span>
+        <span class="n">z_score_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;z_score_author&#39;</span><span class="p">]</span>
+
+        <span class="n">ratio_unknown_ngram_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_unused_ngram_stats</span><span class="p">(</span><span class="n">use_textan</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">auteur</span><span class="p">)</span>
+
+        <span class="n">res_table</span> <span class="o">+=</span> <span class="p">[</span><span class="n">author</span><span class="p">,</span>
+                      <span class="n">word_number</span><span class="p">,</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">get_sci</span><span class="p">(</span><span class="n">ratio_unknown_ngram_number</span> <span class="o">*</span> <span class="mi">100</span><span class="p">),</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">get_sci</span><span class="p">(</span><span class="n">z_score_author</span><span class="p">),</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">get_sci</span><span class="p">(</span><span class="n">val_author</span><span class="p">),</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">get_sci</span><span class="p">(</span><span class="n">val_moyenne_author</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">get_sci</span><span class="p">(</span><span class="n">std_dev_author</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">res_table</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.generate">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.generate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Effectue la génération d&#39;un texte aléatoire suivant les statistiques d&#39;un certain auteur (code étudiant)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné : au retour, un texte aléatoire a été généré, basé sur les statistiques</span>
+<span class="sd">                        d&#39;un seul auteur, ou de l&#39;ensemble des auteurs identifiés</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">golden</span><span class="p">:</span>
+            <span class="n">cip_verif</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">golden</span><span class="o">.</span><span class="n">cip</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cip_verif</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cip</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">cip: &quot;</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">cip</span><span class="p">,</span>
+                            <span class="s2">&quot;- Création de texte aléatoire, vérification à l&#39;aide du code de&quot;</span><span class="p">,</span><span class="n">cip_verif</span><span class="p">)</span>
+        <span class="n">res_table</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;Auteur&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Mots&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Fichier généré&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Vérif</span><span class="se">\n</span><span class="s2">Auteur&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Vérif</span><span class="se">\n</span><span class="s2">Mots&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Vérif</span><span class="se">\n</span><span class="s2">Ngrammes</span><span class="se">\n</span><span class="s2">Inconnus</span><span class="se">\n</span><span class="s2">(%)&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Vérif</span><span class="se">\n</span><span class="s2">Score Z&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Vérif</span><span class="se">\n</span><span class="s2">Prox&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Vérif</span><span class="se">\n</span><span class="s2">Moyenne&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;Vérif</span><span class="se">\n</span><span class="s2">Écart type&quot;</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">auteur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">g</span>
+            <span class="n">gen_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">ngrams_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span>
+            <span class="n">res_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen_from_dict</span><span class="p">(</span><span class="n">auteur</span><span class="p">,</span> <span class="n">gen_dict</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G_fusion</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">G_fusion</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">gen_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">join_dicts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">normalized_ngrams_auteurs</span><span class="p">)</span>
+            <span class="n">auteurs</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">_&quot;</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">)</span>
+            <span class="n">res_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen_from_dict</span><span class="p">(</span><span class="n">auteurs</span><span class="p">,</span> <span class="n">gen_dict</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">auteur</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">:</span>
+                <span class="n">auteur_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">ngrams_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span>
+                <span class="n">res_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen_from_dict</span><span class="p">(</span><span class="n">auteur</span><span class="p">,</span> <span class="n">auteur_dict</span><span class="p">))</span>
+
+        <span class="c1"># https://learnpython.com/blog/print-table-in-python/</span>
+        <span class="n">res_string</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">res_table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;fancy_grid&quot;</span><span class="p">,</span> <span class="n">intfmt</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">res_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">res_string</span>
+        <span class="n">new_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res_string</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>  <span class="c1"># Add tab at beginning of table (shift table right)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="n">new_string</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.find">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.find">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule la proximité d&#39;un certain nombre de textes inconnus avec le &quot;style&quot;</span>
+<span class="sd">            de chacun des auteurs avec le code étudiant</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné : au retour, les textes inconnus ont été comparés aux textes des auteurs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">cip: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cip</span><span class="si">}</span><span class="s1"> - Calcul des fréquences (et auteurs possibles) pour une ou plusieurs oeuvres inconnues&#39;</span><span class="p">)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">--&gt; Probabilité de bon choix selon la cote Z: 2: 97.7%, 1.5: 93.3%, 1.0: 84.1%, 0.5: 69.2%, 0: 50%, -0.5: 30.8%&quot;</span><span class="p">)</span>
+            <span class="n">premiere_ligne</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Auteur </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> :</span><span class="se">\n</span><span class="s2"> Cote Z&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+            <span class="n">premiere_ligne</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Fichier inconnu&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">premiere_ligne</span>
+            <span class="n">res_table</span> <span class="o">=</span> <span class="p">[</span><span class="n">premiere_ligne</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">oeuvre</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">analysis_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">find_author</span><span class="p">(</span><span class="n">oeuvre</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">analysis_result</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sort_author_distance</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">new_analysis_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_proximity_stats</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_result</span><span class="p">)</span>
+                <span class="n">author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;author&#39;</span><span class="p">]</span>
+                <span class="n">val_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;val_author&#39;</span><span class="p">]</span>
+                <span class="n">val_moyenne_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;val_moyenne_author&#39;</span><span class="p">]</span>
+                <span class="n">std_dev_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;std_dev_author&#39;</span><span class="p">]</span>
+                <span class="n">z_score_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;z_score_author&#39;</span><span class="p">]</span>
+                <span class="n">new_res</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">shorten_filename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">oeuvre</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="s2">&quot;Fichier inconnu&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_analysis_results</span><span class="p">)):</span>
+                    <span class="n">author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="n">item</span><span class="p">][</span><span class="s1">&#39;author&#39;</span><span class="p">]</span>
+                    <span class="n">z_score_author</span> <span class="o">=</span> <span class="n">new_analysis_results</span><span class="p">[</span><span class="n">item</span><span class="p">][</span><span class="s1">&#39;z_score_author&#39;</span><span class="p">]</span>
+                    <span class="n">new_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">author</span><span class="si">}</span><span class="s2"> :</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sci</span><span class="p">(</span><span class="n">z_score_author</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">res_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_res</span><span class="p">)</span>
+
+            <span class="c1"># https://learnpython.com/blog/print-table-in-python/</span>
+            <span class="n">res_string</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">res_table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;fancy_grid&quot;</span><span class="p">,</span> <span class="n">intfmt</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">res_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">res_string</span>
+            <span class="n">new_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res_string</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>  <span class="c1"># Add tab at beginning of table (shift table right)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="n">new_string</span><span class="p">)</span>
+
+            <span class="n">res_table2</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">res_string2</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">res_table2</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;fancy_grid&quot;</span><span class="p">,</span> <span class="n">intfmt</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.get_kth_ngram">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.get_kth_ngram">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_kth_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtient le k-ième plus fréquent n-gramme d&#39;un certain auteur avec le code étudiant</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné : au retour, le k-ième n-gramme le plus fréquent a été imprimé</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_get_kth_ngram</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Pas d&#39;auteur: impossible de donner le </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span><span class="si">}</span><span class="s2">-ième </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="si">}</span><span class="s2">-gramme&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">premiere_ligne</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Auteur&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Nbre</span><span class="se">\n</span><span class="s2">de </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="si">}</span><span class="s2">-grammes&quot;</span><span class="p">,</span> <span class="s2">&quot;Premier de la liste&quot;</span><span class="p">,</span> <span class="s2">&quot;Fréquence&quot;</span><span class="p">]</span>
+            <span class="n">res_table</span> <span class="o">=</span> <span class="p">[</span><span class="n">premiere_ligne</span><span class="p">]</span>
+
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">cip: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cip</span><span class="si">}</span><span class="s2"> - Calcul du </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span><span class="si">}</span><span class="s2">e</span><span class="si">{</span><span class="s1">&#39;r&#39;</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="si">}</span><span class="s2">-gramme le plus fréquent&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">auteur</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">:</span>
+                <span class="n">new_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">auteur</span><span class="p">]</span>
+
+                <span class="n">kth_ngram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">get_kth_element</span><span class="p">(</span><span class="n">auteur</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">kth_ngram</span><span class="p">:</span>
+                    <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Pas de </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span><span class="si">}</span><span class="s2">e</span><span class="si">{</span><span class="s1">&#39;r&#39;</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="si">}</span><span class="s2">-gramme&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">total_frequency</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">get_total_occurrences</span><span class="p">(</span><span class="n">auteur</span><span class="p">)</span>
+                    <span class="n">frequency</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">get_ngram_occurrence</span><span class="p">(</span><span class="n">auteur</span><span class="p">,</span> <span class="n">kth_ngram</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">total_frequency</span>
+                    <span class="n">new_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kth_ngram</span><span class="p">))</span>
+                    <span class="n">new_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kth_ngram</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">new_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">frequency</span><span class="si">:</span><span class="s2">.2E</span><span class="si">}</span><span class="s2"> %&quot;</span><span class="p">)</span>
+                    <span class="n">res_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_res</span><span class="p">)</span>
+
+            <span class="c1"># https://learnpython.com/blog/print-table-in-python/</span>
+            <span class="n">res_string</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">res_table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;fancy_grid&quot;</span><span class="p">,</span> <span class="n">intfmt</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">res_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">res_string</span>
+            <span class="n">new_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res_string</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>  <span class="c1"># Add tab at beginning of table (shift table right)</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="n">new_string</span><span class="p">)</span>
+            <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.compare_auteurs">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.compare_auteurs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compare_auteurs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule la proximité entre chacun des auteurs (nombre entre 0 et 1) :</span>
+<span class="sd">            - Effectue le produit scalaire normalisé entre les vecteurs des auteurs</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            [] : Retourne un tableau prêt pour l&#39;impression, avec les noms d&#39;auteurs et les valeurs de comparaison</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res_table</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">auteur_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">closest</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span>
+        <span class="n">farthest</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span>
+        <span class="n">res_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auteur_list</span><span class="p">)</span>  <span class="c1"># La première ligne du tableau de résultats contiendra la liste des auteurs</span>
+        <span class="n">auteur_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">res_buffer</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Tampon pour conserver les valeurs de proximité d&#39;auteurs déjà calculées</span>
+
+        <span class="k">for</span> <span class="n">auteur1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">:</span>
+            <span class="n">auteur_res</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">res_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auteur_res</span><span class="p">)</span>
+            <span class="n">auteur_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auteur1</span><span class="p">)</span>
+            <span class="n">auteur_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auteur1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">auteur2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">:</span>
+                <span class="n">auteurs_key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">((</span><span class="n">auteur1</span><span class="p">,</span> <span class="n">auteur2</span><span class="p">)))</span>  <span class="c1"># Conserver la valeur pour éviter de refaire le calcul</span>
+                <span class="k">if</span> <span class="n">auteurs_key</span> <span class="ow">in</span> <span class="n">res_buffer</span><span class="p">:</span>
+                    <span class="n">distance</span> <span class="o">=</span> <span class="n">res_buffer</span><span class="p">[</span><span class="n">auteurs_key</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dict1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">normalized_ngrams_auteurs</span><span class="p">[</span><span class="n">auteur1</span><span class="p">]</span>
+                    <span class="n">dict2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">normalized_ngrams_auteurs</span><span class="p">[</span><span class="n">auteur2</span><span class="p">]</span>
+                    <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textan</span><span class="o">.</span><span class="n">dot_product_dict</span><span class="p">(</span><span class="n">dict1</span><span class="p">,</span> <span class="n">dict2</span><span class="p">)</span>
+
+                    <span class="n">res_buffer</span><span class="p">[</span><span class="n">auteurs_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+                    <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">farthest</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">farthest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+                        <span class="n">farthest</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">auteurs_key</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">distance</span> <span class="o">&gt;</span> <span class="n">closest</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="n">auteur1</span> <span class="o">!=</span> <span class="n">auteur2</span><span class="p">:</span>
+                        <span class="n">closest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+                        <span class="n">closest</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">auteurs_key</span>
+                <span class="n">auteur_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sci</span><span class="p">(</span><span class="n">distance</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">res_table</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">farthest</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.print_auteur_distance">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.print_auteur_distance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_auteur_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule et imprime la proximité entre chacun des auteurs (nombre entre 0 et 1)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            void : Rien n&#39;est retourné : au retour, la distance entre les différents auteurs a été imprimée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_print_auteur_distance</span><span class="p">:</span>  <span class="c1"># Par défaut ce calcul n&#39;est pas fait.  Utiliser --compare_auteurs</span>
+            <span class="k">return</span>
+
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">cip:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cip</span><span class="p">,</span> <span class="s2">&quot;- Comparaison des auteurs:&quot;</span><span class="p">)</span>
+
+        <span class="n">res_table</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span> <span class="n">farthest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_auteurs</span><span class="p">()</span>
+
+        <span class="c1"># https://learnpython.com/blog/print-table-in-python/</span>
+        <span class="n">res_string</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">res_table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;fancy_grid&quot;</span><span class="p">)</span>
+        <span class="n">res_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">res_string</span>
+        <span class="n">new_string</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res_string</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>  <span class="c1"># Add tab at beginning of table (shift table right)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="n">new_string</span><span class="p">)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Auteurs les plus proches (</span><span class="si">{</span><span class="n">closest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2E</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">closest</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">closest</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Auteurs les plus lointains (</span><span class="si">{</span><span class="n">farthest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2E</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">farthest</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">farthest</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.get_total_execution_time">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.get_total_execution_time">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_execution_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cip</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule et affiche le temps d&#39;exécution total</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cip (str) : Ensemble de cips des membres de l&#39;équipe</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné : au retour, le temps d&#39;exécution a été imprimé</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_run_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">stop_execution_timing</span><span class="p">()</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">cip: </span><span class="si">{</span><span class="n">cip</span><span class="si">}</span><span class="s2"> - Temps d&#39;exécution total: </span><span class="si">{</span><span class="n">total_run_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> secondes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.check_and_setup_golden">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.check_and_setup_golden">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_and_setup_golden</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Vérifie si une version &quot;golden&quot; doit être conservée</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Le nom de la version &quot;golden&quot; est disponible dans le champ args</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (Any) : Au retour, l&#39;instance de test du code golden est retournée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">golden</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">golden</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+            <span class="n">golden_tta</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">golden_tta</span><span class="o">.</span><span class="n">cip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">golden</span>
+            <span class="n">golden_tta</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">exec_operations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">golden</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">golden_tta</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">golden_tta</span></div>
+
+
+<div class="viewcode-block" id="TestTextAn.register_operations">
+<a class="viewcode-back" href="../test_textan.html#test_textan.TestTextAn.register_operations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Enregistre l&#39;ensemble des méthodes à exécuter pour vérifier le code.</span>
+<span class="sd">            Les différentes méthodes doivent être enregistrées dans l&#39;ordre dans lequel leur exécution doit s&#39;effectuer</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : L&#39;enregistrement se fait avec les méthodes définies dans l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné : au retour, toutes les méthodes ont été enregistrées</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">exec_pre_print_banner</span> <span class="o">=</span> <span class="s2">&quot;&gt;&gt;&gt;------------&gt;&gt;&gt; &quot;</span> <span class="o">+</span> <span class="n">ExecOperation</span><span class="o">.</span><span class="n">REPLACE_CIP</span> <span class="o">+</span> <span class="s2">&quot; &lt;&lt;&lt;----------------&lt;&lt;&lt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">exec_pre_print_banner</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Tentative de chargement du code textan_&quot;</span> <span class="o">+</span> <span class="n">ExecOperation</span><span class="o">.</span><span class="n">REPLACE_CIP</span> <span class="o">+</span> <span class="s2">&quot;.py&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">register_one_operation</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">exec_pre_print_banner</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">load_cip_code</span><span class="p">,</span>
+                                            <span class="s2">&quot;Load cip code: TestTextAn.load_cip_code()&quot;</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Chargement réussi&quot;</span><span class="p">)</span>
+        <span class="c1"># Analyse des textes des auteurs (code étudiant)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">register_one_operation</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Appel de la méthode Textan.analyze(): &quot;</span>
+                                            <span class="s2">&quot;Extraction des n-grammes&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">analyze</span><span class="p">,</span>
+                                            <span class="s2">&quot;Analyze n-grams: TestTextan.analyze()&quot;</span><span class="p">,</span>
+                                            <span class="kc">False</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Analyse terminée&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Produit un texte aléatoire avec les statistiques de l&#39;auteur choisi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">register_one_operation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Appel de la méthode Textan.gen_text_dict(): Création de texte aléatoire suivant le style d&#39;un auteur: &quot;</span>
+                                            <span class="s2">&quot;Génération d&#39;un texte aléatoire&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">,</span>
+                                            <span class="s2">&quot;Generate text: TestTextan.gen_text_dict()&quot;</span><span class="p">,</span>
+                                            <span class="kc">False</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Génération de texte terminée&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Calcul de proximité entre un texte inconnu et l&#39;ensemble des auteurs (code étudiant),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">register_one_operation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Appel de la méthode Textan.find(): &quot;</span>
+                                            <span class="s2">&quot;Détection d&#39;un auteur inconnu&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">,</span>
+                                            <span class="s2">&quot;Find auteurs: TestTextan.find()&quot;</span><span class="p">,</span>
+                                            <span class="kc">False</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Fin du calcul de détection d&#39;auteur inconnu&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Trouve le k-ième n-gramme le plus fréquent d&#39;un certain auteur (code étudiant)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">register_one_operation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_get_kth_ngram</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Appel de la méthode Textan.get_kth_ngram(): &quot;</span>
+                                            <span class="s2">&quot;Détection du k-ième n-gramme le plus fréquent&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">get_kth_ngram</span><span class="p">,</span>
+                                            <span class="s2">&quot;Get k-th n-gram: TestTextan.get_kth_ngram()&quot;</span><span class="p">,</span>
+                                            <span class="kc">False</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Fin du calcul du </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span><span class="si">}</span><span class="s2">-ième </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="si">}</span><span class="s2">-gramme le plus fréquent&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Calcule la distance entre les auteurs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">register_one_operation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_print_auteur_distance</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Appel de la méthode Textan.print_auteur_distance(): &quot;</span>
+                                            <span class="s2">&quot;Calcule le cosinus de l&#39;angle entre les vecteurs des auteurs&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">print_auteur_distance</span><span class="p">,</span>
+                                            <span class="s2">&quot;Print auteur distance: TestTextan.print_auteur_distance()&quot;</span><span class="p">,</span>
+                                            <span class="kc">False</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Fin du calcul de proximité entre les auteurs&quot;</span><span class="p">)</span>
+        <span class="c1"># Imprime le temps complet d&#39;exécution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">register_one_operation</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Appel de la méthode Textan.get_total_execution_time(): &quot;</span>
+                                            <span class="s2">&quot;Calcule et imprime le temps d&#39;exécution total&quot;</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">get_total_execution_time</span><span class="p">,</span>
+                                            <span class="s2">&quot;Print temps total: TestTextan.get_total_execution_time()&quot;</span><span class="p">,</span>
+                                            <span class="kc">True</span><span class="p">,</span>
+                                            <span class="kc">False</span><span class="p">,</span>
+                                            <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Fin des calculs&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructeur pour la classe TestTextAn.  Initialisation de l&#39;ensemble des éléments requis :</span>
+
+<span class="sd">            - Au besoin, création d&#39;une instance &quot;golden&quot; de TextAn, pour la vérification et la correction</span>
+<span class="sd">            - Lecture des cips des équipes d&#39;étudiants</span>
+<span class="sd">            - Mise en mémoire du répertoire de démarrage</span>
+<span class="sd">            - Validation qu&#39;au moins l&#39;un de :</span>
+<span class="sd">                - la ligne de commande</span>
+<span class="sd">                - le fichier de configuration</span>
+<span class="sd">                - indique une action à effectuer</span>
+<span class="sd">                    - (génération de texte, découverte d&#39;auteur, calcul du k-ième n-gramme, proximité d&#39;auteurs)</span>
+<span class="sd">            - Création d&#39;une instance de CommandTextan, pour enregistrer puis exécuter une série de méthodes</span>
+<span class="sd">            - Utilise le patron de conception (design pattern) &quot;command&quot;</span>
+<span class="sd">                - Enregistre la séquence d&#39;opérations à exécuter avec le code TextAn :</span>
+<span class="sd">                    - Charge le code fourni par l&#39;équipe</span>
+<span class="sd">                    - Invoque la méthode d&#39;analyse de texte de l&#39;équipe</span>
+<span class="sd">                    - Ensuite, au besoin :</span>
+<span class="sd">                        - Invoque la méthode de génération de texte aléatoire</span>
+<span class="sd">                        - Calcule la proximité d&#39;un texte inconnu avec les textes des auteurs fournis</span>
+<span class="sd">                        - Trouve le k-ième ngramme le plus fréquent pour un certain auteur</span>
+<span class="sd">                        - Trouve la distance entre les oeuvres des différents auteurs</span>
+<span class="sd">            - Création d&#39;une instance de TextBeautifier, qui permet d&#39;améliorer le format des textes générés</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Le constructeur lit la ligne de commande et ajuste l&#39;état de l&#39;objet TestTextAn en conséquence</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, la nouvelle instance de test est prête à être utilisée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_cips</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_cwd_to_sys_path</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_something_to_do</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">CommandTextan</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_operations</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_beautifier</span> <span class="o">=</span> <span class="n">TextBeautifier</span><span class="p">()</span>
+
+        <span class="k">return</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../test_textan.html#test_textan.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Démarrage de l&#39;exécution du code de la problématique, pour l&#39;ensemble des équipes :</span>
+<span class="sd">        - Initialiser une instance de test</span>
+<span class="sd">        - Pour chaque équipe (séquence de cips) :</span>
+<span class="sd">            - Faire une copie fraiche de l&#39;instance de test</span>
+<span class="sd">            - Exécuter la série de commandes préparées à l&#39;aide du patron de conception &quot;command&quot; :</span>
+<span class="sd">                - Préparation effectuée dans le constructeur TestTextAn</span>
+<span class="sd">        - Si l&#39;ensemble du code est trop long à s&#39;exécuter (par défaut, 2 minutes), interrompre l&#39;exécution</span>
+<span class="sd">        - Attraper toutes les exceptions non-traitées dans le code étudiant</span>
+
+<span class="sd">    Args :</span>
+<span class="sd">        (void) : Tout ce qui est nécessaire est défini à l&#39;intérieur de la méthode</span>
+
+<span class="sd">    Returns :</span>
+<span class="sd">        (void) : Au retour, l&#39;exécution est terminée</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">init_tta</span> <span class="o">=</span> <span class="n">TestTextAn</span><span class="p">()</span>  <span class="c1"># Initialisation de l&#39;instance de test</span>
+    <span class="n">init_tta</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># S&#39;il est fourni, sauvegarder le code golden</span>
+    <span class="n">golden_tta</span> <span class="o">=</span> <span class="n">init_tta</span><span class="o">.</span><span class="n">check_and_setup_golden</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">cip</span> <span class="ow">in</span> <span class="n">init_tta</span><span class="o">.</span><span class="n">cips</span><span class="p">:</span>  <span class="c1"># Permet de tester le code d&#39;une ou plusieurs équipes, à tour de rôle</span>
+        <span class="n">tta</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+            <span class="n">init_tta</span>
+        <span class="p">)</span>  <span class="c1"># Copie fraiche de l&#39;objet, pour isoler les instances des étudiants</span>
+
+        <span class="c1"># Si golden_tta a été fourni, assigner la sous-structure associée pour utilisation future de la version golden</span>
+        <span class="n">tta</span><span class="o">.</span><span class="n">golden</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">golden_tta</span><span class="p">,</span> <span class="s2">&quot;textan&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tta</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">exec_operations</span><span class="p">(</span><span class="n">cip</span><span class="p">)</span>
+
+        <span class="c1"># Si le code étudiant est trop lent (120 secondes par défaut), interrompre</span>
+        <span class="k">except</span> <span class="n">debug_handler_common</span><span class="o">.</span><span class="n">DebugHandlerTimeOutException</span><span class="p">:</span>
+            <span class="n">tta</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">print_timeout_exception</span><span class="p">()</span>
+
+        <span class="c1"># Mauvaise pratique (attraper toutes les exceptions), mais nécessaire ici, pour du code étudiant inconnu</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">tta</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">print_general_exception</span><span class="p">()</span>
+
+    <span class="c1"># si stdout a été redirigé vers un fichier ; le fermer pour ne rien perdre</span>
+    <span class="k">if</span> <span class="n">init_tta</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">fichier_res</span> <span class="ow">and</span> <span class="n">init_tta</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">fichier_res</span> <span class="o">!=</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">close_stdout</span><span class="p">()</span>
+    <span class="k">return</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

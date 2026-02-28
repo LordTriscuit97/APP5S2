@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module test_textan_command &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=de505bba"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Module test_textan_parsing" href="test_textan_parsing.html" />
+    <link rel="prev" title="Module test_textan" href="test_textan.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module test_textan_command</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#diagramme-de-classe">Diagramme de classe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-test_textan_command">Code du module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#test_textan_command.CommandTextan"><code class="docutils literal notranslate"><span class="pre">CommandTextan</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan_command.CommandTextan.exec_operations"><code class="docutils literal notranslate"><span class="pre">CommandTextan.exec_operations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan_command.CommandTextan.register_one_operation"><code class="docutils literal notranslate"><span class="pre">CommandTextan.register_one_operation()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#test_textan_command.ExecOperation"><code class="docutils literal notranslate"><span class="pre">ExecOperation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan_command.ExecOperation.DEFAULT_POST_PRINT"><code class="docutils literal notranslate"><span class="pre">ExecOperation.DEFAULT_POST_PRINT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan_command.ExecOperation.REPLACE_CIP"><code class="docutils literal notranslate"><span class="pre">ExecOperation.REPLACE_CIP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan_command.ExecOperation.run_op"><code class="docutils literal notranslate"><span class="pre">ExecOperation.run_op()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module test_textan_command</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/test_textan_command.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <a class="reference internal image-reference" href="_images/UdeS_logo_h_pms347-crop.jpg"><img alt="_images/UdeS_logo_h_pms347-crop.jpg" src="_images/UdeS_logo_h_pms347-crop.jpg" style="width: 200px;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="module-test-textan-command">
+<h1>Module test_textan_command<a class="headerlink" href="#module-test-textan-command" title="Lien vers cette rubrique"></a></h1>
+<section id="diagramme-de-classe">
+<h2>Diagramme de classe<a class="headerlink" href="#diagramme-de-classe" title="Lien vers cette rubrique"></a></h2>
+<a class="reference internal image-reference" href="_images/classes_test_textan_command.png"><img alt="_images/classes_test_textan_command.png" src="_images/classes_test_textan_command.png" style="width: 1000.0000000000001px; height: 337.71667662881055px;" />
+</a>
+</section>
+<section id="module-test_textan_command">
+<span id="code-du-module"></span><h2>Code du module<a class="headerlink" href="#module-test_textan_command" title="Lien vers cette rubrique"></a></h2>
+<p>Code utilitaire pour implémenter le patron de conception « command », utilisé dans test_textan.py</p>
+<p>Copyright 2024-2026 F. Mailhot</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="test_textan_command.CommandTextan">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_textan_command.</span></span><span class="sig-name descname"><span class="pre">CommandTextan</span></span><a class="reference internal" href="_modules/test_textan_command.html#CommandTextan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan_command.CommandTextan" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe qui implémente le patron de conception « command » :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Permet de prédéfinir l’ordre des méthodes à appeler, puis d’en faire l’exécution</p></li>
+</ul>
+</div></blockquote>
+<p>Copyright 2024-2026 F. Mailhot</p>
+<p>Constructeur pour la classe CommandTextan.  Initialisation de l’ensemble des éléments requis</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Le constructeur initialise l’objet CommandTextan</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, la nouvelle instance est prête à être utilisée</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan_command.CommandTextan.exec_operations">
+<span class="sig-name descname"><span class="pre">exec_operations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan_command.html#CommandTextan.exec_operations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan_command.CommandTextan.exec_operations" title="Lien vers cette définition"></a></dt>
+<dd><p>Appelle dans l’ordre la série de méthodes enregistrées dans le champ self.operations</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>cip (string) : Le ou les CIPs des membres de l’équipe dont le code est exécuté</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, l’ensemble des méthodes a été exécuté</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan_command.CommandTextan.register_one_operation">
+<span class="sig-name descname"><span class="pre">register_one_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exec_flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_pre_print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_has_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_post_print_flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_post_print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan_command.html#CommandTextan.register_one_operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan_command.CommandTextan.register_one_operation" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Enregistre une méthode à exécuter pour vérifier le code.</dt><dd><p>Les enregistrements doivent être faits dans l’ordre dans lequel leur exécution doit s’effectuer</p>
+</dd>
+<dt>Args :</dt><dd><p>exec_flag (bool) : Indique si cette méthode doit être exécutée ou non
+exec_pre_print (string) : Message à imprimer avant l’exécution
+exec_func (callable) : Méthode à exécuter
+func_name (string) : Nom de la fonction à appeler et courte explication
+exec_has_param (bool) : Indique si la méthode exec_func doit utiliser un paramètre ou non (le cip)
+exec_post_print (string) : Message à imprimer après l’exécution de la méthode</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, la méthode a été enregistrée</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="test_textan_command.ExecOperation">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_textan_command.</span></span><span class="sig-name descname"><span class="pre">ExecOperation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exec_flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_pre_print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_has_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_post_print_flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exec_post_print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_textan_command.html#ExecOperation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan_command.ExecOperation" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe qui définit les opérations à effectuer par la classe CommandTextan :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Permet de définir les méthodes à exécuter et les commentaires à imprimer avant et/ou après l’exécution</p></li>
+</ul>
+</div></blockquote>
+<p>Copyright 2024-2026 F. Mailhot</p>
+<p>Constructeur pour la classe ExecOperation : Prépare l’exécution d’une commande</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>exec_flag (bool) : Indique que cette méthode doit être exécutée
+exec_pre_print (str) : Message à imprimer avant l’exécution
+exec_func (callable) : Méthode à exécuter
+exec_has_param (bool) : La méthode utilise un paramètre (le cip) qui est passé en paramètre
+exec_post_print_flag(bool) : Imprime (ou non) exec_post_print
+exec_post_print (str) : Message à imprimer après l’exécution</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, la nouvelle instance d’exécution de commande est prête à être utilisée</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_textan_command.ExecOperation.DEFAULT_POST_PRINT">
+<span class="sig-name descname"><span class="pre">DEFAULT_POST_PRINT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\tExécution'</span></em><a class="headerlink" href="#test_textan_command.ExecOperation.DEFAULT_POST_PRINT" title="Lien vers cette définition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="test_textan_command.ExecOperation.REPLACE_CIP">
+<span class="sig-name descname"><span class="pre">REPLACE_CIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'X_CIP_X'</span></em><a class="headerlink" href="#test_textan_command.ExecOperation.REPLACE_CIP" title="Lien vers cette définition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan_command.ExecOperation.run_op">
+<span class="sig-name descname"><span class="pre">run_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/test_textan_command.html#ExecOperation.run_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan_command.ExecOperation.run_op" title="Lien vers cette définition"></a></dt>
+<dd><p>Exécution d’une commande prédéfinie</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>cip (str) : Le cip à utiliser en paramètre pour les méthodes qui le requièrent</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, la méthode a été exécutée, avec les messages imprimés avant et après</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation créée le 19 févr. 2026.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="test_textan.html" class="btn btn-neutral float-left" title="Module test_textan" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="test_textan_parsing.html" class="btn btn-neutral float-right" title="Module test_textan_parsing" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

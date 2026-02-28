@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>textan_cip1_cip2 &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=de505bba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">textan_cip1_cip2</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de textan_cip1_cip2</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Ce fichier contient la classe TextAn, à utiliser pour résoudre la problématique.</span>
+<span class="sd">    C&#39;est un gabarit pour l&#39;application de traitement des fréquences de mots dans les oeuvres d&#39;auteurs divers.</span>
+
+<span class="sd">    Les méthodes apparaissant dans ce fichier définissent une API qui est utilisée par l&#39;application</span>
+<span class="sd">    de test test_textan.py</span>
+<span class="sd">    Les paramètres d&#39;entrée et de sortie (Application Programming Interface, API) sont définis,</span>
+<span class="sd">    mais le code est à écrire au complet.</span>
+<span class="sd">    Vous pouvez ajouter toutes les méthodes et toutes les variables nécessaires au bon fonctionnement du système</span>
+
+<span class="sd">    La classe TextAn est invoquée par la classe TestTextAn (contenue dans test_textan.py) :</span>
+
+<span class="sd">        - Tous les arguments requis sont présents et accessibles dans args (dans le fichier test_textan.py)</span>
+<span class="sd">        - Les arguments proviennent :</span>
+<span class="sd">            - soit du fichier de configuration test_textan_config.yml,</span>
+<span class="sd">            - soit de la ligne de commande</span>
+<span class="sd">        - Note : vous pouvez tester votre code en utilisant les commandes :</span>
+<span class="sd">            + &quot;python test_textan.py&quot;</span>
+<span class="sd">            + &quot;python test_textan.py -h&quot; (donne la liste des arguments possibles)</span>
+<span class="sd">            + &quot;python test_textan.py --v&quot; (mode &quot;verbose&quot;, qui indique les valeurs de tous les arguments)</span>
+<span class="sd">        - Note (2) : vous pouvez modifier le fichier test_textan_config.yml :</span>
+<span class="sd">            - Vous le trouverez dans le répertoire de travail (Problematique/data)</span>
+<span class="sd">            - Les mêmes options existent dans le fichier test_textan_config.yml et en ligne de commande</span>
+<span class="sd">            - Les paramètres passés en ligne de commande ont priorité sur ceux définis dans le fichier de configuration</span>
+<span class="sd">        - Note (3) : pour exécuter le harnais de test test_textan.py :</span>
+<span class="sd">            - Il est nécessaire que le répertoire de travail soit :</span>
+<span class="sd">                - Problematique/data</span>
+<span class="sd">            - Dans PyCharm, vous pouvez définir à la fois:</span>
+<span class="sd">                - le répertoire de travail (Problematique/data)</span>
+<span class="sd">                - le script à utiliser (Problematique/src/test_textan.py)</span>
+<span class="sd">                - les paramètres en ligne de commande (le fichier de configuration donne les valeurs par défaut)</span>
+
+<span class="sd">    Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextIO</span>
+<span class="c1"># import math  # Au besoin, retirer le commentaire de cette ligne</span>
+<span class="c1"># import random # Au besoin, retirer le commentaire de cette ligne</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">textan_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextAnCommon</span>
+
+
+<div class="viewcode-block" id="TextAn">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TextAn</span><span class="p">(</span><span class="n">TextAnCommon</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classe à utiliser pour coder la solution à la problématique :</span>
+
+<span class="sd">        - La classe héritée TextAnCommon contient certaines fonctions de base pour faciliter le travail :</span>
+<span class="sd">            - recherche des auteurs</span>
+<span class="sd">            - ouverture des répertoires</span>
+<span class="sd">            - obtention de la liste des oeuvres d&#39;un auteur (get_aut_files(auteur))</span>
+<span class="sd">            - et autres (voir la classe TextAnCommon pour plus d&#39;information)</span>
+<span class="sd">        - Les interfaces du code à développer sont présentes, mais tout le code est à écrire</span>
+<span class="sd">        - En particulier, il faut compléter les fonctions suivantes :</span>
+<span class="sd">            - add_dict(dict1, dict2)</span>
+<span class="sd">            - analyze()</span>
+<span class="sd">            - dot_product_dict (dict1, dict2)</span>
+<span class="sd">            - find_author (oeuvre)</span>
+<span class="sd">            - gen_text_dict(auteur_dict, taille, to_file)</span>
+<span class="sd">            - get_kth_element (auteur, k)</span>
+<span class="sd">            - get_ngram_occurrence (auteur, ngram)</span>
+<span class="sd">            - get_total_occurrences (auteur)</span>
+<span class="sd">            - get_vector_size(dict)</span>
+<span class="sd">            - normalize_vector(dict)</span>
+
+
+<span class="sd">    Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Signes de ponctuation à traiter comme des mots (compléter cette liste incomplète)</span>
+    <span class="n">PONC</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="s2">&quot;;&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Ajouter les structures de données et les fonctions nécessaires à l&#39;analyse des textes,</span>
+    <span class="c1"># la production de textes aléatoires, la détection d&#39;oeuvres inconnues,</span>
+    <span class="c1"># l&#39;identification des k-ièmes mots les plus fréquents.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Les méthodes qui suivent doivent toutes être complétées pour que le système soit opérationnel</span>
+    <span class="c1"># et que le harnais de test (test_textan.py) puisse exécuter tous les tests requis.</span>
+    <span class="c1">#</span>
+    <span class="c1">#  Note : Voir la documentation ReadTheDocs</span>
+    <span class="c1">#</span>
+
+<div class="viewcode-block" id="TextAn.get_vector_size">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.get_vector_size">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_vector_size</span><span class="p">(</span><span class="n">dict_de_ngrams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule la longueur (norme) du vecteur (dictionnaire) de ngrams contenus dans un dictionnaire</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            dict_de_ngrams (dict) : le vecteur de ngrams (dict) en question</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            taille (float) : La norme du vecteur (dict) est retournée</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Les lignes qui suivent ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer et les remplacer par du code fonctionnel</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">dict_de_ngrams</span><span class="p">)</span>
+        <span class="n">taille</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">return</span> <span class="n">taille</span></div>
+
+
+<div class="viewcode-block" id="TextAn.normalize_vector">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.normalize_vector">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_de_ngrams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalize le vecteur (dictionnaire), en divisant chaque occurrence par la taille totale</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            dict_de_ngrams (dict) : le vecteur de n-grammes (dict) en question</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (dict) : Une nouvelle version normalisée du dictionnaire est retournée</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Les lignes qui suivent ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer et les remplacer par du code fonctionnel</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">dict_de_ngrams</span><span class="p">)</span>
+        <span class="n">norm_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">norm_dict</span></div>
+
+
+<div class="viewcode-block" id="TextAn.add_dict">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.add_dict">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dict</span><span class="p">(</span><span class="n">dict1</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dict2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Additionne deux vecteurs représentés par des dictionnaires</span>
+<span class="sd">        Note : le vecteur de retour n&#39;est PAS NORMALISÉ</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            dict1 (dict) : le premier vecteur</span>
+
+<span class="sd">            dict2 (dict) : le deuxième vecteur</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            sum_dict (dict) : La somme des deux vecteurs passés en paramètre</span>
+
+<span class="sd">        Copyright 2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Les lignes qui suivent ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer et les remplacer par du code fonctionnel</span>
+        <span class="n">sum_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">dict1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">dict2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sum_dict</span></div>
+
+
+<div class="viewcode-block" id="TextAn.dot_product_dict">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.dot_product_dict">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dot_product_dict</span><span class="p">(</span><span class="n">dict1</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dict2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule le produit scalaire de deux vecteurs représentés par des dictionnaires</span>
+<span class="sd">            Note : ce produit scalaire n&#39;est PAS normalisé</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            dict1 (dict) : le premier vecteur</span>
+<span class="sd">            dict2 (dict) : le deuxième vecteur</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            dot_product (float) : Le produit scalaire normalisé de deux vecteurs</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Les lignes qui suivent ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer et les remplacer par du code fonctionnel</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dict1</span><span class="p">,</span> <span class="n">dict2</span><span class="p">)</span>
+        <span class="n">dot_product</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">return</span> <span class="n">dot_product</span></div>
+
+
+<div class="viewcode-block" id="TextAn.find_author">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.find_author">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oeuvre</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Après analyse des textes d&#39;auteurs connus, retourner la liste d&#39;auteurs</span>
+<span class="sd">            et le niveau de proximité (un nombre entre 0 et 1) de l&#39;oeuvre inconnue</span>
+<span class="sd">            avec les écrits de chacun d&#39;entre eux</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            oeuvre (str) : Nom du fichier contenant l&#39;oeuvre d&#39;un auteur inconnu</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            resultats (Liste[(string, float)]) : Liste de tuples (auteur, niveau de proximité),</span>
+<span class="sd">            où la proximité est un nombre entre 0 et 1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># La ligne suivante ne sert qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut la retirer lorsque le code est complété</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Auteurs: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">Oeuvre: &quot;</span><span class="p">,</span> <span class="n">oeuvre</span><span class="p">)</span>
+
+        <span class="c1"># Exemple du format des sorties</span>
+        <span class="n">resultats</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;Premier_auteur&quot;</span><span class="p">,</span> <span class="mf">0.1234</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Deuxième_auteur&quot;</span><span class="p">,</span> <span class="mf">0.1123</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Exemple de lecture du fichier oeuvre une ligne à la fois.  Modifier ou remplacer ce code par le vôtre.</span>
+        <span class="n">fichier_oeuvre</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">oeuvre</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+        <span class="n">lignes</span> <span class="o">=</span> <span class="n">fichier_oeuvre</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">plus_grande_ligne</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ligne</span> <span class="ow">in</span> <span class="n">lignes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ligne</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">plus_grande_ligne</span><span class="p">):</span>
+                <span class="n">plus_grande_ligne</span> <span class="o">=</span> <span class="n">ligne</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Plus grande ligne: &quot;</span><span class="p">,</span> <span class="n">plus_grande_ligne</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="c1"># Ajouter votre code pour déterminer la proximité du fichier passé en paramètre avec chacun des auteurs</span>
+        <span class="c1"># Retourner la liste des auteurs, chacun avec sa proximité au fichier inconnu</span>
+        <span class="c1"># Plus la proximité est grande, plus proche l&#39;oeuvre inconnue est des autres écrits d&#39;un auteur</span>
+        <span class="c1">#   Le produit scalaire entre le vecteur représentant les oeuvres d&#39;un auteur</span>
+        <span class="c1">#       et celui associé au texte inconnu pourrait s&#39;avérer intéressant...</span>
+        <span class="c1">#   Le résultat du produit scalaire doit ensuite être normalisé</span>
+        <span class="c1">#   avec la taille du vecteur associé au texte inconnu :</span>
+        <span class="c1">#   proximité = (A dot product B) / (|A| |B|)   où A est le vecteur du texte inconnu et B est celui d&#39;un auteur,</span>
+        <span class="c1">#           &quot;dot product&quot; est le produit scalaire, et |X| est la norme (longueur) du vecteur X.</span>
+        <span class="c1">#   À la fin, le produit scalaire normalisé représente le cosinus de l&#39;angle (oeuvre/auteur)</span>
+
+        <span class="k">return</span> <span class="n">resultats</span></div>
+
+
+<div class="viewcode-block" id="TextAn.get_ngram_occurrence">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.get_ngram_occurrence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ngram_occurrence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ngram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le nombre d&#39;occurrences du n-gramme pour cet auteur</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (string) : le nom de l&#39;auteur</span>
+
+<span class="sd">            ngram (objet du type utilisé pour un ngram) : le n-gramme dont on désire la fréquence</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (int) : retourne le nombre d&#39;occurrences du n-gramme pour l&#39;auteur donné</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Les lignes qui suivent ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer et les remplacer par du code fonctionnel</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="p">,</span> <span class="n">auteur</span><span class="p">,</span> <span class="n">ngram</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="TextAn.get_total_occurrences">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.get_total_occurrences">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_occurrences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le nombre total d&#39;occurrences de n-grammes pour cet auteur</span>
+<span class="sd">            - Représente le total de n-grammes pour l&#39;ensemble des oeuvres de cet auteur</span>
+<span class="sd">            - Ce nombre est différent de la norme du vecteur :</span>
+<span class="sd">                - il s&#39;agit seulement du total d&#39;occurrences de l&#39;ensemble des ngrammes</span>
+<span class="sd">                - Le calcul doit donner la somme des valeurs, et non la racine carrée de la somme des carrés des valeurs</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (string) : le nom de l&#39;auteur</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (int) : retourne le nombre total d&#39;occurrences pour l&#39;auteur donné</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Les lignes qui suivent ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer et les remplacer par du code fonctionnel</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="p">,</span> <span class="n">auteur</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="TextAn.gen_text_dict">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.gen_text_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gen_text_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">taille</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">to_file</span><span class="p">:</span> <span class="n">TextIO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Après analyse des textes d&#39;auteurs connus, produire un texte selon des statistiques d&#39;un dictionnaire</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur_dict (dict) : Dictionnaire à utiliser (soit d&#39;un auteur, ou d&#39;un amalgame d&#39;auteurs)</span>
+<span class="sd">            taille (int) : Taille du texte à générer</span>
+<span class="sd">            to_file (TextIO) : Pointeur vers le fichier à créer.</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : ne retourne rien, le texte produit doit être écrit dans le fichier fourni,</span>
+<span class="sd">                    comprenant à la fin une série de &quot;taille&quot; mots séparés par des espaces</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Les lignes qui suivent ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer et les remplacer par du code fonctionnel</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span><span class="p">,</span> <span class="n">auteur_dict</span><span class="p">,</span> <span class="n">taille</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">to_file</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextAn.get_kth_element">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.get_kth_element">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_kth_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Après analyse des textes d&#39;auteurs connus, retourner la liste des k-ièmes plus fréquents</span>
+<span class="sd">         n-grammes de l&#39;auteur indiqué</span>
+<span class="sd">         Note : il peut y avoir plus d&#39;un n-gramme avec le même nombre d&#39;occurrences.</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (str) : Nom de l&#39;auteur à utiliser</span>
+<span class="sd">            k (int) : Indice du n-gramme à retourner</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            ngram (List[Liste[string]]) : Liste de listes de mots composant le n-gramme recherché</span>
+<span class="sd">            (il est possible qu&#39;il y ait plus d&#39;un n-gramme au même rang)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Les lignes suivantes ne servent qu&#39;à éliminer un avertissement.</span>
+        <span class="c1"># Il faut les retirer lorsque le code est complété</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">,</span> <span class="n">auteur</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+        <span class="n">ngram</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;un&quot;</span><span class="p">,</span> <span class="s2">&quot;roman&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;le&quot;</span><span class="p">,</span> <span class="s2">&quot;lac&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="s2">&quot;est&quot;</span><span class="p">]]</span>  <span class="c1"># Exemple du format de sortie pour trois bigrammes</span>
+        <span class="k">return</span> <span class="n">ngram</span></div>
+
+
+<div class="viewcode-block" id="TextAn.get_text_size">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.get_text_size">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_text_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oeuvre</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule le nombre de mots dans une oeuvre</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            oeuvre (str) : Nom du fichier contenant les mots</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            word_number (int) : Nombre de mots dans le fichier</span>
+<span class="sd">            Note: les signes de ponctuation sont considérés des mots</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">word_number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">,</span> <span class="n">oeuvre</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">word_number</span></div>
+
+
+<div class="viewcode-block" id="TextAn.compute_ngram_stats">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.compute_ngram_stats">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_ngram_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_de_ngrams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">oeuvre</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule la fréquence des n-grammes dans une oeuvre, avec les n-grammes comme clé dans</span>
+<span class="sd">        le dictionnaire de ngrams dict_de_ngrams, le nombre d&#39;occurrences étant la valeur</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            dict_de_ngrams (dict) : Dictionnaire de n-grammes à utiliser</span>
+<span class="sd">            oeuvre (str) : nom de l&#39;oeuvre à lire et à analyser</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : les ngrams et leurs fréquences sont entrés dans le dictionnaire passé en paramètre</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fichier_oeuvre</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">oeuvre</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+        <span class="n">lignes</span> <span class="o">=</span> <span class="n">fichier_oeuvre</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ligne</span> <span class="ow">in</span> <span class="n">lignes</span><span class="p">:</span>
+            <span class="c1"># Traiter tous les mots de la ligne</span>
+            <span class="c1"># Regrouper les mots en n-grammes (avec une fenêtre glissante)</span>
+            <span class="c1"># Considérer que les espaces, tabulations et retours de chariot sont des séparateurs entre les mots</span>
+            <span class="c1"># Mettre à jour dans le dictionnaire dict_de_ngrams avec le nombre d&#39;occurrences des n-grammes trouvés</span>
+            <span class="c1"># Les print qui suivent ne sont présents uniquement pour éliminer des avertissements</span>
+            <span class="c1"># Les variables ligne et self devraient être utiles pour votre code</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">ligne</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">fichier_oeuvre</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextAn.analyze">
+<a class="viewcode-back" href="../textan_cip1_cip2.html#textan_cip1_cip2.TextAn.analyze">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fait l&#39;analyse des textes fournis, en traitant chaque oeuvre de chaque auteur</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : toute l&#39;information est contenue dans l&#39;objet TextAn</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : ne retourne rien, toute l&#39;information extraite est conservée dans des structures internes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Ajouter votre code ici pour traiter l&#39;ensemble des oeuvres de l&#39;ensemble des auteurs</span>
+        <span class="c1"># Pour l&#39;analyse :  faire le calcul des occurrences de n-grammes pour l&#39;ensemble des oeuvres</span>
+        <span class="c1">#   d&#39;un certain auteur, sans distinction des oeuvres individuelles,</span>
+        <span class="c1">#       et recommencer ce calcul pour chacun des auteurs</span>
+        <span class="c1">#   En procédant ainsi, les oeuvres comprenant plus de mots auront un impact plus grand sur</span>
+        <span class="c1">#   les statistiques globales d&#39;un auteur.</span>
+        <span class="c1"># Il serait possible de considérer que toutes les oeuvres d&#39;un auteur ont un poids identique.</span>
+        <span class="c1">#   Pour ce faire, il faudrait faire les calculs des occurrences pour chacune des oeuvres</span>
+        <span class="c1">#       de façon indépendante, pour ensuite les normaliser,</span>
+        <span class="c1">#       avant de les additionner pour obtenir le vecteur complet d&#39;un auteur</span>
+        <span class="c1">#   De cette façon, les mots d&#39;un court poème auraient une importance beaucoup plus grande que</span>
+        <span class="c1">#   les mots d&#39;une très longue oeuvre du même auteur. Ce n&#39;est PAS ce qui vous est demandé ici.</span>
+        <span class="c1">#</span>
+        <span class="c1"># Pour chaque auteur, créer un dictionnaire contenant :</span>
+        <span class="c1">#       les ngrammes comme clé</span>
+        <span class="c1">#       le nombre d&#39;occurrences comme valeur</span>
+        <span class="c1">#   Le dictionnaire de chacun des auteurs doit être ajouté à self.ngrams_auteurs, avec l&#39;auteur comme clé</span>
+
+        <span class="c1"># Ces trois lignes ne servent qu&#39;à éliminer un avertissement. Il faut les retirer lorsque le code est complété</span>
+        <span class="n">ngram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_empty_ngram</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ngram</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">)</span>
+
+        <span class="c1"># Le code qui suit indique comment accéder aux noms des fichiers qui contiennent les oeuvres des auteurs.</span>
+        <span class="c1"># Vous pouvez l&#39;adapter pour effectuer l&#39;analyse</span>
+        <span class="c1"># for auteur in self.auteurs:</span>
+        <span class="c1">#     for oeuvre in self.auteurs[auteur]:</span>
+        <span class="c1">#         print(oeuvre)</span>
+        <span class="c1"># Pour chacun des auteurs, on devrait obtenir :</span>
+        <span class="c1">#   self.mots_auteurs[auteur] = vecteur de n-grammes avec leur nombre d&#39;occurrences</span>
+        <span class="c1">#   self.normalized_mots_auteurs[auteur] = vecteur normalisé de n-grammes normalisés.</span>
+
+        <span class="k">for</span> <span class="n">auteur</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">:</span>
+            <span class="n">oeuvres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aut_files</span><span class="p">(</span><span class="n">auteur</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">oeuvre</span> <span class="ow">in</span> <span class="n">oeuvres</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">oeuvre</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize l&#39;objet de type TextAn lorsqu&#39;il est créé</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Utilise simplement les informations fournies dans la classe TextAnCommon</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Ne fait qu&#39;initialiser l&#39;objet de type TextAn</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Initialisation des champs nécessaires aux fonctions fournies</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Au besoin, ajouter votre code d&#39;initialisation de l&#39;objet de type TextAn lors de sa création</span>
+
+        <span class="k">return</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

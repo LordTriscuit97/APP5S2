@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module handle_unicode_common &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=de505bba"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Module PrintUtil" href="PrintUtil.html" />
+    <link rel="prev" title="Module debug_handler_common" href="debug_handler_common.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module handle_unicode_common</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#diagramme-de-classe">Diagramme de classe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-handle_unicode_common">Code du module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#handle_unicode_common.HandleUnicodeCommon"><code class="docutils literal notranslate"><span class="pre">HandleUnicodeCommon</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#handle_unicode_common.HandleUnicodeCommon.debug_utf8_string"><code class="docutils literal notranslate"><span class="pre">HandleUnicodeCommon.debug_utf8_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handle_unicode_common.HandleUnicodeCommon.get_strings"><code class="docutils literal notranslate"><span class="pre">HandleUnicodeCommon.get_strings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handle_unicode_common.HandleUnicodeCommon.normalize_string"><code class="docutils literal notranslate"><span class="pre">HandleUnicodeCommon.normalize_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handle_unicode_common.HandleUnicodeCommon.string_from_hex_list"><code class="docutils literal notranslate"><span class="pre">HandleUnicodeCommon.string_from_hex_list()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module handle_unicode_common</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/handle_unicode_common.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <a class="reference internal image-reference" href="_images/UdeS_logo_h_pms347-crop.jpg"><img alt="_images/UdeS_logo_h_pms347-crop.jpg" src="_images/UdeS_logo_h_pms347-crop.jpg" style="width: 200px;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="module-handle-unicode-common">
+<h1>Module handle_unicode_common<a class="headerlink" href="#module-handle-unicode-common" title="Lien vers cette rubrique"></a></h1>
+<section id="diagramme-de-classe">
+<h2>Diagramme de classe<a class="headerlink" href="#diagramme-de-classe" title="Lien vers cette rubrique"></a></h2>
+<a class="reference internal image-reference" href="_images/classes_handle_unicode_common.png"><img alt="_images/classes_handle_unicode_common.png" src="_images/classes_handle_unicode_common.png" style="width: 505.0px; height: 166.0px;" />
+</a>
+</section>
+<section id="module-handle_unicode_common">
+<span id="code-du-module"></span><h2>Code du module<a class="headerlink" href="#module-handle_unicode_common" title="Lien vers cette rubrique"></a></h2>
+<p>Utilitaires pour traiter les chaînes de caractères unicode (utf-8), nécessaires pour les lettres accentuées</p>
+<p>Copyright 2024-2026 Frédéric Mailhot</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="handle_unicode_common.HandleUnicodeCommon">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">handle_unicode_common.</span></span><span class="sig-name descname"><span class="pre">HandleUnicodeCommon</span></span><a class="reference internal" href="_modules/handle_unicode_common.html#HandleUnicodeCommon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#handle_unicode_common.HandleUnicodeCommon" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe destinée à traiter uniformément les caractères utf-8</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Méthode utile pour le laboratoire et la problématique :</dt><dd><ul>
+<li><p>normalize_string : retourne une chaîne de caractères utf-8 normalisés</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Méthodes utiles pour le laboratoire seulement :</dt><dd><ul>
+<li><p>debug_utf8_string : imprime sous forme hexadecimale une chaîne de caractères utf-8</p></li>
+<li><p>string_from_hex_list : transforme une liste de caractères hexadécimaux en chaîne de caractères utf-8</p></li>
+<li><p>get_strings : produit deux chaînes de caractères utf-8 en apparence identiques (utile pour le laboratoire)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="handle_unicode_common.HandleUnicodeCommon.debug_utf8_string">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">debug_utf8_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/handle_unicode_common.html#HandleUnicodeCommon.debug_utf8_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#handle_unicode_common.HandleUnicodeCommon.debug_utf8_string" title="Lien vers cette définition"></a></dt>
+<dd><dl>
+<dt>Imprime (dans une chaine de caractères utf-8) sous forme hexadécimale</dt><dd><p>tous les caractères utf-8 d’une chaîne de caractères passée en paramètre.
+Utile uniquement pour le débogage de chaînes de caractères avec des lettres accentuées.
+Il y a plusieurs formes possibles d’une chaîne de caractères utf-8.
+Python ne les distingue pas à l’impression, mais peut tout de même indiquer
+que les chaînes de caractères sont différentes.</p>
+<p>Cette méthode permet de vérifier le contenu réel d’une chaîne de caractères,
+en affichant TOUS les caractères.</p>
+</dd>
+<dt>Args :</dt><dd><p>a_str (str) : La chaîne de caractères à observer</p>
+</dd>
+<dt>Returns :</dt><dd><p>str_res (str) : Cette méthode (utilisée pour déboguer) retourne dans une chaîne de caractères
+en format utf-8 le contenu de la chaîne de caractères sous forme hexadécimale passée en paramètre</p>
+</dd>
+</dl>
+<p>Copyright 2024-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="handle_unicode_common.HandleUnicodeCommon.get_strings">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/handle_unicode_common.html#HandleUnicodeCommon.get_strings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#handle_unicode_common.HandleUnicodeCommon.get_strings" title="Lien vers cette définition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="handle_unicode_common.HandleUnicodeCommon.normalize_string">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normalize_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/handle_unicode_common.html#HandleUnicodeCommon.normalize_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#handle_unicode_common.HandleUnicodeCommon.normalize_string" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Retourne une chaîne de caractères normalisée.</dt><dd><p>Cette opération est nécessaire pour les lettres accentuées, représentées en format UTF-8.
+En effet, les lettres accentuées ont deux représentations possibles :
+- la lettre accentuée elle-même, avec un code unique (toutes les lettres accentuées existent en UTF-8)
+- la lettre non-accentuée, suivie d’un caractère qui indique le type d’accent
+Le problème est que Python ne gère qu’en partie les deux représentations possibles :
+- à l’impression de la chaîne de caractères, il n’y aura pas de différence
+- la comparaison indiquera cependant qu’il ne s’agit pas de la même chaîne de caractères.
+Il est donc essentiel d’avoir une représentation unique (ce que la méthode normalize_string() effectue).</p>
+</dd>
+<dt>Args :</dt><dd><p>a_str (str) : La chaîne de caractères à convertir</p>
+</dd>
+<dt>Returns :</dt><dd><p>(str) : La chaîne de caractères avec une représentation UTF-8 canonique (unique et standard)</p>
+</dd>
+</dl>
+<p>Copyright 2024-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="handle_unicode_common.HandleUnicodeCommon.string_from_hex_list">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">string_from_hex_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_utf8_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/handle_unicode_common.html#HandleUnicodeCommon.string_from_hex_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#handle_unicode_common.HandleUnicodeCommon.string_from_hex_list" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Transforme un ensemble de nombres hexadécimaux (sous forme de chaîne de caractères)</dt><dd><p>en chaîne de caractères utf-8</p>
+</dd>
+<dt>Args :</dt><dd><p>hex_utf8_str (str) : Chaîne de caractères en format hexadecimal à convertir en chaîne de caractères utf8</p>
+</dd>
+<dt>Returns :</dt><dd><p>(str) : La chaine de caractères utf-8 résultante</p>
+</dd>
+</dl>
+<p>Copyright 2024-2026 F. Mailhot</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation créée le 19 févr. 2026.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="debug_handler_common.html" class="btn btn-neutral float-left" title="Module debug_handler_common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="PrintUtil.html" class="btn btn-neutral float-right" title="Module PrintUtil" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

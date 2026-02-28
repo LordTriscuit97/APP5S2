@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module PrintUtil &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=de505bba"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Module smart_formatter_common" href="smart_formatter_common.html" />
+    <link rel="prev" title="Module handle_unicode_common" href="handle_unicode_common.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module PrintUtil</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#diagramme-de-classe">Diagramme de classe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PrintUtil">Code du module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PrintUtil.PrintUtil"><code class="docutils literal notranslate"><span class="pre">PrintUtil</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.block_stdout"><code class="docutils literal notranslate"><span class="pre">PrintUtil.block_stdout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.close_stdout"><code class="docutils literal notranslate"><span class="pre">PrintUtil.close_stdout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.get_stdout"><code class="docutils literal notranslate"><span class="pre">PrintUtil.get_stdout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.get_sys_stdout"><code class="docutils literal notranslate"><span class="pre">PrintUtil.get_sys_stdout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.log_print"><code class="docutils literal notranslate"><span class="pre">PrintUtil.log_print()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.reset_stdout"><code class="docutils literal notranslate"><span class="pre">PrintUtil.reset_stdout()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.set_stdout_path"><code class="docutils literal notranslate"><span class="pre">PrintUtil.set_stdout_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#PrintUtil.PrintUtil.unblock_stdout"><code class="docutils literal notranslate"><span class="pre">PrintUtil.unblock_stdout()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module PrintUtil</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/PrintUtil.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <a class="reference internal image-reference" href="_images/UdeS_logo_h_pms347-crop.jpg"><img alt="_images/UdeS_logo_h_pms347-crop.jpg" src="_images/UdeS_logo_h_pms347-crop.jpg" style="width: 200px;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="module-printutil">
+<h1>Module PrintUtil<a class="headerlink" href="#module-printutil" title="Lien vers cette rubrique"></a></h1>
+<section id="diagramme-de-classe">
+<h2>Diagramme de classe<a class="headerlink" href="#diagramme-de-classe" title="Lien vers cette rubrique"></a></h2>
+<a class="reference internal image-reference" href="_images/classes_PrintUtil.png"><img alt="_images/classes_PrintUtil.png" src="_images/classes_PrintUtil.png" style="width: 341.0px; height: 246.0px;" />
+</a>
+</section>
+<section id="module-PrintUtil">
+<span id="code-du-module"></span><h2>Code du module<a class="headerlink" href="#module-PrintUtil" title="Lien vers cette rubrique"></a></h2>
+<p>Code utilitaire pour gérer l’impression</p>
+<p>Copyright 2025-2026 F. Mailhot</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PrintUtil.</span></span><span class="sig-name descname"><span class="pre">PrintUtil</span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe permettant la gestion de l’impression :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Permet de définir où se fera l’impression des messages de test (écran ou fichier de log)</p></li>
+<li><p>Permet de désactiver les impressions effectuées dans le code étudiant</p></li>
+<li><dl class="simple">
+<dt>Cette classe est utilisée directement, sans instance, en utilisant uniquement :</dt><dd><ul>
+<li><p>des attributs de classe</p></li>
+<li><p>des méthodes de classe</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Les attributs de classe utilisés sont :</dt><dd><ul>
+<li><dl class="simple">
+<dt>__STDOUT<span class="classifier">sys.stdout d’origine</span><span class="classifier">ne peut être modifié, conserve le « vrai » sys.stdout</span></dt><dd><ul>
+<li><p>utilisé pour revenir à sys.stdout après blocage des print()</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>_current : sys.stdout par défaut, peut être redéfini, utilisé par log_print()</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Copyright 2025-2026 F. Mailhot</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.block_stdout">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">block_stdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.block_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.block_stdout" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Redéfinit sys.stdout pour l’impression dans le code étudiant (print standards) :</dt><dd><ul class="simple">
+<li><p>Remplace sys.stdout par /dev/null (impression inactive)</p></li>
+</ul>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, sys.stdout est redéfini vers os.devnull</p>
+</dd>
+</dl>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.close_stdout">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close_stdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.close_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.close_stdout" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Ferme le fichier associé à l’impression par la méthode log_print :</dt><dd><ul class="simple">
+<li><p>Appelé à la fin, pour fermer correctement le fichier de log</p></li>
+<li><p>Si le « fichier » de log est l’écran (sys.stdout), ne fait rien</p></li>
+</ul>
+</dd>
+</dl>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.get_stdout">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_stdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TextIO</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.get_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.get_stdout" title="Lien vers cette définition"></a></dt>
+<dd><p>Retourne le pointeur vers le fichier utilisé pour l’impression avec la méthode log_print :</p>
+<dl class="simple">
+<dt>Returns :</dt><dd><p>(TextIO) : Au retour, le fichier courant (pour l’impression) est retourné</p>
+</dd>
+</dl>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.get_sys_stdout">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_sys_stdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TextIO</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.get_sys_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.get_sys_stdout" title="Lien vers cette définition"></a></dt>
+<dd><p>Retourne la version originale de sys.stdout :</p>
+<dl>
+<dt>Returns :</dt><dd><blockquote>
+<div><p>(TextIO) : Au retour, sys.stdout original est retourné</p>
+</div></blockquote>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.log_print">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.log_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.log_print" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Imprime dans le fichier de log :</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>Par défaut, si ce qui est imprimé se termine par un retour de chariot/newline</dt><dd><p>(end=”newline/carriage return” par défaut), alors effectuer un flush après impression</p>
+</dd>
+</dl>
+</li>
+<li><p>Pour contrôler précisément cette action, « flush=True/False » peut être utilisé comme paramètre</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>args :      Paramètres habituels de print()
+kwargs :    Paramètres habituels de print()</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, l’impression a eu lieu dans le fichier de log (par défaut, sys.stdout)</p>
+</dd>
+</dl>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.reset_stdout">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset_stdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.reset_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.reset_stdout" title="Lien vers cette définition"></a></dt>
+<dd><p>Remet sys.stdout comme fichier d’impression :</p>
+<dl class="simple">
+<dt>Returns :</dt><dd><p>(void) : Au retour, le fichier courant d’impression a été fermé et remplacé par sys.stdout</p>
+</dd>
+</dl>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.set_stdout_path">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_stdout_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.set_stdout_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.set_stdout_path" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Redéfinit le fichier courant pour l’impression effectuée par la classe (méthode log_print) :</dt><dd><ul class="simple">
+<li><p>Permet d’identifier où se fera l’impression (sys.stdout habituellement, ou fichier de log)</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>path (str) : Le chemin complet vers le nouveau fichier de log</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, le fichier d’impression des logs est redéfini pour la méthode log_print</p>
+</dd>
+</dl>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PrintUtil.PrintUtil.unblock_stdout">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unblock_stdout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PrintUtil.html#PrintUtil.unblock_stdout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PrintUtil.PrintUtil.unblock_stdout" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Remet la valeur par défaut de sys.stdout :</dt><dd><ul class="simple">
+<li><p>permet d’imprimer de nouveau normalement avec print()</p></li>
+<li><p>n’est utilisé que si block_stdout a été utilisé auparavant</p></li>
+</ul>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, sys.stdout original est revenu</p>
+</dd>
+</dl>
+<p>Copyright 2025-2026 F. Mailhot</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation créée le 19 févr. 2026.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="handle_unicode_common.html" class="btn btn-neutral float-left" title="Module handle_unicode_common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="smart_formatter_common.html" class="btn btn-neutral float-right" title="Module smart_formatter_common" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

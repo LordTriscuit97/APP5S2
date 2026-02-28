@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>text_beautifier &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=de505bba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">text_beautifier</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de text_beautifier</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Code utilitaire améliorer le format d&#39;un fichier de texte en créant des paragraphes,</span>
+<span class="sd">    des lignes de longueur limitée, des phrases qui débutent par une majuscule.</span>
+
+<span class="sd">    Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+
+<div class="viewcode-block" id="TextBeautifier">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TextBeautifier</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classe utilisée pour rendre plus attrayant un texte généré automatiquement</span>
+
+<span class="sd">    Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructeur qui initialise la classe TextBeautifier</span>
+
+<span class="sd">            - Ajoute une liste vide d&#39;expressions régulières</span>
+<span class="sd">            - Ajoute un ensemble d&#39;expressions régulières à utiliser en séquence sur des chaînes de caractères à traiter</span>
+
+<span class="sd">            Args :</span>
+<span class="sd">                (void) : Tout le nécessaire se trouve dans le code d&#39;initialisation de la classe TextBeautifier</span>
+
+<span class="sd">            Returns :</span>
+<span class="sd">                (void) : Au retour, l&#39;objet est initialisé avec l&#39;ensemble d&#39;expressions régulières à appliquer</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Définit une liste d&#39;expressions régulières pour modifier les textes générés</span>
+        <span class="c1">#   Permet de produire un texte plus élégant...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regex_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_regex_list</span><span class="p">()</span>
+
+        <span class="k">return</span>
+
+<div class="viewcode-block" id="TextBeautifier.add_swap_regex">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.add_swap_regex">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_swap_regex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swap_str_or_func</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ajoute une expression régulière pour trouver une certaine séquence de caractères,</span>
+<span class="sd">            ainsi qu&#39;une expression régulière pour la remplacer</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            match_str (str) : Expression régulière pour trouver une chaîne de caractères</span>
+<span class="sd">            swap_str_of_func (object) : Expression régulière pour remplacer la chaîne trouvée ou fonction à appliquer</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           (void) : Ne fait qu&#39;ajouter un tuple à la liste des expressions régulières de l&#39;objet</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regex_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">match_str</span><span class="p">,</span> <span class="n">swap_str_or_func</span><span class="p">))</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextBeautifier.build_regex_list">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.build_regex_list">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_regex_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ajoute un ensemble d&#39;expressions régulières pour modifier le texte généré et le rendre plus élégant</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : N&#39;utilise que l&#39;objet, où on ajoute l&#39;ensemble d&#39;expressions régulières</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           (void) : Ne fait qu&#39;ajouter une liste d&#39;expressions régulières à l&#39;objet</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regex_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="c1"># Mettre en majuscule la première lettre d&#39;un mot qui suit la fin d&#39;une phrase</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\.!\?\-] [a-z]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_upper</span><span class="p">)</span>
+
+        <span class="c1"># Mettre en majuscule la première lettre d&#39;un mot qui suit un &quot;_&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\_[a-z]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_upper</span><span class="p">)</span>
+
+        <span class="c1"># Mettre en majuscule la première lettre du premier mot du texte</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="s2">&quot;^.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_upper</span><span class="p">)</span>
+
+        <span class="c1"># Traiter et préparer le texte</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\n&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; \.&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; \,&quot;</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; \!&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; &#39; &quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; \;&quot;</span><span class="p">,</span> <span class="s2">&quot;;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; \:&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; - &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\( &quot;</span><span class="p">,</span> <span class="s2">&quot;(&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; \)&quot;</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; m\.&quot;</span><span class="p">,</span> <span class="s2">&quot; M.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; mme&quot;</span><span class="p">,</span> <span class="s2">&quot; Mme&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;_ (.*?) _&quot;</span><span class="p">,</span> <span class="s2">&quot;_</span><span class="se">\\</span><span class="s2">1_&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; _ &quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;__&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\.\)&quot;</span><span class="p">,</span> <span class="s2">&quot;).&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_swap_regex</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\._&quot;</span><span class="p">,</span> <span class="s2">&quot;_.&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextBeautifier.replace">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.replace">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace</span><span class="p">(</span><span class="n">file_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">match_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">swap_str_or_func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Utilise une expression régulière pour identifier et modifier des éléments d&#39;un texte</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            file_contents (str) : Texte complet à modifier</span>
+<span class="sd">            match_str (str) : Expression régulière cible</span>
+<span class="sd">            swap_str_or_func (str, callable) : Expression régulière pour modifier la cible (str) ou méthode à appliquer</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           file_contents (str) : Texte modifié</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_contents</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">match_str</span><span class="p">,</span> <span class="n">swap_str_or_func</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file_contents</span></div>
+
+
+<div class="viewcode-block" id="TextBeautifier.convert_to_upper">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.convert_to_upper">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_to_upper</span><span class="p">(</span><span class="n">match_object</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Conversion de la chaîne de caractères en majuscule.  Typiquement utilisé sur un unique caractère</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            match_object (str) : Chaîne de caractères à convertir en majuscule</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           (str) : Chaîne de caractères convertie en majuscule</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">match_object</span><span class="o">.</span><span class="n">group</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="TextBeautifier.format_paragraphs">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.format_paragraphs">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_paragraphs</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">linemax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">pmax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">pvar</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modifie un texte comprenant une série de mots séparés par des espaces pour ajouter des paragraphes de</span>
+<span class="sd">            tailles variables ainsi que des terminaisons de lignes pour limiter la longueur des lignes du texte</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            text (str) : Texte suivi (série de mots séparés par des espaces)</span>
+<span class="sd">            linemax (int) : Nombre maximal de caractères sur une ligne</span>
+<span class="sd">            pmax (int) : Nombre moyen de mots dans un paragraphe</span>
+<span class="sd">            pvar (int) : Variation maximale du nombre de mots dans un paragraphe</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           mod_text (str) : Texte modifié, avec des fins de paragraphes et de lignes</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 0. Extraire les mots du texte et ajouter un &quot;.&quot; comme dernier mot (si nécessaire)</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>         <span class="c1"># Si le texte à traiter est vide, retourner une chaîne de caractères vide</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">words</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>    <span class="c1"># Ajouter un &quot;.&quot; à la toute fin du texte, s&#39;il n&#39;y en a pas déjà</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 1. Créer des paragraphes (ajouter &quot;\n\n&quot; à la fin du dernier mot d&#39;un paragraphe)</span>
+        <span class="c1"># Taille des paragraphes variables, en moyenne pmax, avec une variation aléatoire de + ou - pvar mots</span>
+        <span class="c1"># Les paragraphes se terminent avec un &quot;mot&quot; qui contient un &#39;.&#39; au dernier caractère</span>
+        <span class="n">paragraph_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">pmax_courant</span> <span class="o">=</span> <span class="n">pmax</span> <span class="o">+</span> <span class="n">pvar</span> <span class="o">-</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pvar</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)):</span>
+            <span class="n">paragraph_size</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">paragraph_size</span> <span class="o">&gt;</span> <span class="n">pmax_courant</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">):</span>
+                <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="n">paragraph_size</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">pmax_courant</span> <span class="o">=</span> <span class="n">pmax</span> <span class="o">+</span> <span class="n">pvar</span> <span class="o">-</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pvar</span>
+
+        <span class="c1"># 2. Ajouter un retour de chariot lorsque le dernier mot ferait dépasser la ligne de la taille linemax</span>
+        <span class="c1"># Après la fin d&#39;un paragraphe (présence de &quot;\n\n&quot; à la fin d&#39;un mot), ajouter un alinéa (&quot;\t&quot;)</span>
+        <span class="n">mod_text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+        <span class="n">line_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)):</span>
+            <span class="n">word_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">line_size</span> <span class="o">+</span> <span class="n">word_size</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">linemax</span><span class="p">:</span>
+                <span class="n">mod_text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">line_size</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">mod_text</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">line_size</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">mod_text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">line_size</span> <span class="o">+=</span> <span class="n">word_size</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">mod_text</span></div>
+
+
+<div class="viewcode-block" id="TextBeautifier.post_traitement">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.post_traitement">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post_traitement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mettre des majuscules aux endroits appropriés, ajouter des fins de lignes et de paragraphes</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            file_contents (str) : Texte à traiter</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           file_contents (str) : Le texte modifié</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Créer des paragraphes de taille agréable, séparer les lignes trop longues,</span>
+        <span class="c1">#   ajouter un alinéa (tabulation, &quot;\t&quot;) au début des paragraphes</span>
+        <span class="n">file_contents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_paragraphs</span><span class="p">(</span><span class="n">file_contents</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file_contents</span></div>
+
+
+<div class="viewcode-block" id="TextBeautifier.prettify_string">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.prettify_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prettify_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modifie un fichier de texte pour le rendre plus attrayant :</span>
+<span class="sd">            - Mise en forme des virgules et des points à la fin d&#39;une phrase</span>
+<span class="sd">            - Mise en forme des mots en début de phrase (majuscule pour la première lettre)</span>
+<span class="sd">            - Ajout de séparation de paragraphes et de fin de lignes</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            textname (str) : Nom du fichier de texte à modifier</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           (void) : Le fichier d&#39;origine est remplacé par le texte modifié, alors rien n&#39;est retourné</span>
+
+<span class="sd">        Copyright 2024 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Appliquer les expressions régulières au texte :</span>
+        <span class="c1">#   - Mettre en majuscules les mots en début de phrase</span>
+        <span class="k">for</span> <span class="n">swap_tuple</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex_list</span><span class="p">:</span>
+            <span class="n">find_str</span> <span class="o">=</span> <span class="n">swap_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">swap_str</span> <span class="o">=</span> <span class="n">swap_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">file_contents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">file_contents</span><span class="p">,</span> <span class="n">find_str</span><span class="p">,</span> <span class="n">swap_str</span><span class="p">)</span>
+
+        <span class="c1"># Création de paragraphes de taille aléatoire mais raisonnable</span>
+        <span class="n">new_file_contents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_traitement</span><span class="p">(</span><span class="n">file_contents</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_file_contents</span></div>
+
+
+<div class="viewcode-block" id="TextBeautifier.prettify_file">
+<a class="viewcode-back" href="../text_beautifier.html#text_beautifier.TextBeautifier.prettify_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prettify_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">textname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modifie un fichier de texte pour le rendre plus attrayant :</span>
+<span class="sd">            - Mise en forme des virgules et des points à la fin d&#39;une phrase</span>
+<span class="sd">            - Mise en forme des mots en début de phrase (majuscule pour la première lettre)</span>
+<span class="sd">            - Ajout de séparation de paragraphes et de fin de lignes</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            textname (str) : Nom du fichier de texte à modifier</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">           (void) : Le fichier d&#39;origine est remplacé par le texte modifié, alors rien n&#39;est retourné</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># https://www.studytonight.com/python-howtos/search-and-replace-a-text-in-a-file-in-python</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">textname</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="c1"># Lire le contenu du fichier, pour le modifier en mémoire</span>
+            <span class="n">file_contents</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="c1"># Modifier le contenu du fichier pour que le texte soit plus joli</span>
+            <span class="n">pretty_file_contents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prettify_string</span><span class="p">(</span><span class="n">file_contents</span><span class="p">)</span>
+
+            <span class="c1"># Réécriture du fichier de départ avec le texte modifié</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pretty_file_contents</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

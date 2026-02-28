@@ -1,0 +1,148 @@
+# Configuration du test de l'analyse de texte
+#
+# Paramètres pour l'exécution du harnais de test pour les fichiers textan_cip1_cip2.py
+# Ces valeurs peuvent être modifiées :
+#     - ici, dans le fichier de configuration
+#     - sur la ligne de commande, avec l'option appropriée
+#     - Note : la ligne de commande a préséance sur le fichier de configuration, qui a préséance sur les valeurs par défaut
+#
+# Copyright 2025 F. Mailhot
+
+#
+# Prochains paramètres : liés à l'exécution générale du harnais de test
+#
+
+# Répertoire d'auteurs et de leurs textes
+d: TextesPourVerif
+
+# Indication que la ponctuation doit être éliminée
+noPonc: False
+
+
+
+#
+# Prochains paramètres : liés aux tâches à exécuter à l'aide du harnais de test
+#
+
+# Taille des n-grammes par défaut pour l'analyse, la recherche et la génération de textes
+m: 4
+
+# Numéro des K-ièmes plus fréquents n-grammes à identifier (si None ou 0, cette fonctionnalité n'est pas exécutée
+K: 25
+
+# Indication que les auteurs seront comparés (par défaut : Faux)
+# compare_auteurs: True
+
+#
+# Prochains paramètres : liés à l'exécution du code étudiant
+#
+
+# Nom du répertoire qui contient le code étudiant (chemin relatif au répertoire contenant test_textan.py)
+dir_code: ../src
+
+# Nom du fichier comprenant la liste des équipes (format :  cip1_cip2, un par ligne)
+# Ce fichier doit se trouver dans le répertoire indiqué par le paramètre dir_code
+e: etudiants_sol.txt
+
+#
+# Prochains paramètres : Liés à l'identification d'un ou plusieurs textes inconnus
+#
+
+# Nom du répertoire qui comprend le ou les textes inconnus
+#  (chemin par rapport au répertoire où se déroule l'exécution)
+f_dir: Inconnus2
+
+# Nom du fichier inconnu (unique) à identifier
+# Ce fichier doit se trouver dans le répertoire indiqué par le paramètre f_dir
+f: None
+
+# Nom du fichier qui comprend une liste de fichiers inconnus à identifier, un par ligne
+# À utiliser s'il y a plus d'un fichier inconnu à identifier
+# Ce fichier doit se trouver dans le répertoire indiqué par le paramètre f_dir
+# Les fichiers d'auteurs inconnus indiqués doivent aussi se trouver dans le répertoire indiqué par le paramètre f_dir
+F: textes_inconnus.txt
+
+#
+#  Prochains paramètres : liés à la génération de texte aléatoire
+#
+
+# Nom du répertoire où générer les textes aléatoires (chemin relatif au répertoire où se déroule l'exécution)
+g_dir: ./Nouveaux_textes
+
+# Nom de l'auteur pour lequel il faut générer un texte aléatoire
+g: None
+# g: Dumas
+
+# Nom du fichier qui comprend la liste d'auteurs pour lesquels il faut générer des textes aléatoires
+# Ce fichier doit se trouver dans le répertoire identifié par l'option g_dir
+# G: None
+G: liste_auteurs.txt
+
+# Nom du fichier qui indique les auteurs à combiner pour générer un texte aléatoire unique
+# Ce fichier doit se trouver dans le répertoire identifié par l'option g_dir
+G_fusion: None
+# G_fusion: liste_auteurs.txt
+
+# Taille du (des) texte(s) aléatoire(s) à générer
+g_size: 10000
+
+# Nom du (des) texte(s) aléatoire(s) à générer
+# Peut utiliser les jetons suivants :
+#   <CIP>
+#   <AUT>
+#   <DATE>
+#   <HR>
+#   <MIN>
+#   <SEC>
+# Par défaut : Gen_text_<CIP>_<AUT>_<DATE>.<HR>.<MIN>.<SEC>.txt
+
+g_name: _<CIP>_<AUT>_<DATE>.<HR>.<MIN>.<SEC>.txt
+
+# Indication que le "prettifier" doit être utilisé (ou non) sur les fichiers générés
+# Par défaut : Vrai, c'est-à-dire que le "prettifier" sera utilisé
+pretty: True
+
+
+#
+# Prochains paramètres : liés à l'utilisation d'un fichier de log (en remplacement de l'impression à l'écran)
+#
+
+# Nom du fichier où tous les résultats seront écrits (fichier de log, par défaut, à l'écran)
+# fichier_res: None
+fichier_res: Verif_execution.txt
+
+# Nom du répertoire où produire le fichier de résultats (répertoire du fichier de log)
+# dir_res: None
+dir_res: Resdir
+
+# Comparaison entre les auteurs :
+#  la comparaison d'un auteur avec lui-même devrait donner 1
+#  la comparaison entre 2 auteurs distincts devrait donner un nombre entre 0 et 1
+compare_auteurs: True
+
+
+#
+# Prochains paramètres : liés à des configurations plus spécialisées du harnais de test
+#
+
+# Mode verbose
+v: False
+
+# Temps maximal d'exécution, en secondes (par défaut, 120)
+timeout: 120
+
+# Indication que les prints du code étudiant ne seront pas actifs (par défaut : Faux, les prints du code étudiant sont actifs)
+no_stdout_etudiant: False
+# no_stdout_etudiant: True
+
+# Nombre maximal de récursions permises (par défaut : 1000)
+recursion: None
+
+# Comparaison des résultats avec ceux de la version "golden"
+golden: None
+
+
+
+
+
+

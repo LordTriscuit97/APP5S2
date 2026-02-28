@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>textan_common &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=de505bba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">textan_common</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de textan_common</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Ce fichier contient la classe TextAnCommon, utilisée pour la résolution de la problématique.</span>
+<span class="sd">    Ce code ne devrait pas être modifié, il contient des méthodes utiles qui sont utilisées dans le gabarit de solution</span>
+
+<span class="sd">    Les méthodes apparaissant dans ce fichier définissent des fonctionnalités de base qui sont utilisées dans</span>
+<span class="sd">    la classe TextAn.</span>
+
+<span class="sd">    La classe TextAn est invoquée par la classe TestTextAn (contenue dans test_textan.py) :</span>
+
+<span class="sd">        - Tous les arguments requis sont présents et accessibles dans args (dans le fichier test_textan.py)</span>
+<span class="sd">        - Note : vous pouvez tester votre code en utilisant les commandes :</span>
+<span class="sd">            + &quot;python test_textan.py&quot;</span>
+<span class="sd">            + &quot;python test_textan.py -h&quot; (donne la liste des arguments possibles)</span>
+<span class="sd">            + &quot;python test_textan.py -v&quot; (mode &quot;verbose&quot;, qui indique les valeurs de tous les arguments)</span>
+
+<span class="sd">    Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ntpath</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">handle_unicode_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">HandleUnicodeCommon</span>
+
+
+<div class="viewcode-block" id="TextAnCommon">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TextAnCommon</span><span class="p">(</span><span class="n">HandleUnicodeCommon</span><span class="p">):</span>
+    <span class="c1"># Le code qui suit est fourni pour vous faciliter la vie.  Il n&#39;a pas à être modifié</span>
+
+    <span class="c1"># Signes de ponctuation à traiter comme des mots (compléter la liste qui ne comprend que &quot;!&quot; au départ)</span>
+    <span class="c1"># Modifier cette liste dans votre code (textan_CIP1_CIP2.py).</span>
+    <span class="n">PONC</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;!&quot;</span><span class="p">,</span> <span class="s2">&quot;;&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TextAnCommon.get_empty_ngram">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.get_empty_ngram">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_empty_ngram</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne un ngramme vide de la taille indiquée (liste contenant des chaînes de caractères vides)</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            size (int) : le nombre de mots vides dans la liste ngramme</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            ngram (liste) : La liste de mots vides</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ngram</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span>
+        <span class="k">return</span> <span class="n">ngram</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.subtract_dict">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.subtract_dict">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">subtract_dict</span><span class="p">(</span><span class="n">dict1</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dict2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule la différence entre les dimensions de deux vecteurs</span>
+<span class="sd">            Note : Toutes les dimensions (clés) du deuxième vecteur (dictionnaire)</span>
+<span class="sd">                    sont retirées du premier vecteur (dictionnaire)</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            dict1 (dict) : le premier vecteur</span>
+<span class="sd">            dict2 (dict) : le deuxième vecteur</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            sub_dict (dict) : Le vecteur (dictionnaire) résultant</span>
+
+<span class="sd">        Copyright 2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sub_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dict1</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dict2</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">sub_dict</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.get_aut_files">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.get_aut_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_aut_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtient la liste des fichiers (avec le chemin complet) des oeuvres d&#39;un auteur</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (string) : le nom de l&#39;auteur dont on veut obtenir la liste des oeuvres</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            oeuvres (Liste[string]) : liste des oeuvres (avec le chemin complet pour y accéder)</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvres_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.set_aut_files">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.set_aut_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_aut_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Met en mémoire la liste des fichiers (avec le chemin complet) des oeuvres d&#39;un auteur</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (string) : le nom de l&#39;auteur dont on veut obtenir la liste des oeuvres</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : La liste des oeuvres de l&#39;auteur est ajoutée dans le dictionnaire self.oeuvres_auteurs</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># https://stackoverflow.com/questions/3964681/find-all-files-in-a-directory-with-extension-txt-in-python</span>
+        <span class="n">oeuvres</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rep_aut</span><span class="p">,</span> <span class="n">auteur</span><span class="p">))</span>
+                   <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oeuvres_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span> <span class="o">=</span> <span class="n">oeuvres</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.set_auteurs">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.set_auteurs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_auteurs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtient la liste des auteurs, à partir du répertoire qui les contient tous</span>
+
+<span class="sd">        Note : le champ self.rep_aut doit être prédéfini :</span>
+<span class="sd">            - Par défaut, il contient le répertoire d&#39;exécution du script</span>
+<span class="sd">            - Peut être redéfini par la méthode set_aut_dir</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : ne fait qu&#39;obtenir la liste des répertoires d&#39;auteurs et modifier la liste self.auteurs</span>
+
+<span class="sd">        Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># https://stackoverflow.com/questions/973473/getting-a-list-of-all-subdirectories-in-the-current-directory</span>
+        <span class="n">full_path_auteurs</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rep_aut</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngrams_auteurs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">auteur_path</span> <span class="ow">in</span> <span class="n">full_path_auteurs</span><span class="p">:</span>
+            <span class="n">auteur</span> <span class="o">=</span> <span class="n">TextAnCommon</span><span class="o">.</span><span class="n">normalize_string</span><span class="p">(</span><span class="n">ntpath</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">auteur_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auteur</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ngrams_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_aut_files</span><span class="p">(</span><span class="n">auteur</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.set_aut_dir">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.set_aut_dir">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_aut_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aut_dir</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Définit le nom du répertoire qui contient l&#39;ensemble des répertoires d&#39;auteurs</span>
+
+<span class="sd">        Note : L&#39;appel à cette méthode</span>
+<span class="sd">            - extrait la liste des répertoires d&#39;auteurs et les ajoute à self.auteurs</span>
+<span class="sd">            - extrait la liste des oeuvres de chaque auteur et l&#39;ajoute à self.oeuvres_auteurs[auteur]</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            aut_dir (string) : Nom du répertoire (peut être absolu ou bien relatif au répertoire d&#39;exécution)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : ne fait que définir le nom du répertoire qui contient les répertoires d&#39;auteurs</span>
+
+<span class="sd">        Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">aut_dir</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rep_aut</span> <span class="o">=</span> <span class="n">aut_dir</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rep_aut</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">aut_dir</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rep_aut</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rep_aut</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_auteurs</span><span class="p">()</span>
+
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.set_ngram_size">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.set_ngram_size">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_ngram_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ngram_size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Indique que l&#39;analyse et la génération de texte se fera avec des n-grammes de taille ngram</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            ngram (int) : Indique la taille des n-grammes (1, 2, 3, ...)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : ne fait que mettre à jour le champ ngram</span>
+
+<span class="sd">        Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span> <span class="o">=</span> <span class="n">ngram_size</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.get_ngram_occurrence">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.get_ngram_occurrence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ngram_occurrence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ngram</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le nombre d&#39;occurrences du n-gramme pour cet auteur</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (string) : le nom de l&#39;auteur</span>
+<span class="sd">            ngram (objet de type ngram) : le n-gramme dont on désire la fréquence</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (int) : retourne ne nombre d&#39;occurrences du n-gramme pour l&#39;auteur donné</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.get_total_occurrences">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.get_total_occurrences">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_occurrences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auteur</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le nombre total d&#39;occurrences de n-grammes pour cet auteur</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            auteur (string) : le nom de l&#39;auteur</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (int) : retourne ne nombre total d&#39;occurrences pour l&#39;auteur donné</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.normalize_vector">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.normalize_vector">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_de_ngrams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalize le vecteur (dictionnaire), en divisant chaque occurrence par la taille totale</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            dict_de_ngrams (dict) : le vecteur de n-grammes (dict) en question</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (dict) : Une nouvelle version normalisée du dictionnaire est retournée</span>
+
+<span class="sd">        Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">norm_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">norm_dict</span></div>
+
+
+<div class="viewcode-block" id="TextAnCommon.normalize_ngrams_auteurs">
+<a class="viewcode-back" href="../textan_common.html#textan_common.TextAnCommon.normalize_ngrams_auteurs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">normalize_ngrams_auteurs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise tous les vecteurs de n-grammes de chacun des auteurs</span>
+
+<span class="sd">            Args :</span>
+<span class="sd">                (void) : Tout se trouve dans l&#39;objet</span>
+<span class="sd">                    (la liste d&#39;auteurs, ainsi que les vecteurs de n-grammes de chacun)</span>
+
+<span class="sd">            Returns :</span>
+<span class="sd">                (void) : Le tableau self.normalized_ngrams_auteurs est créé avec les vecteurs de n-grammes normalisés</span>
+
+<span class="sd">            Copyright 2026 F. Mailhot</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">auteur</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">normalized_ngrams_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngrams_auteurs</span><span class="p">[</span><span class="n">auteur</span><span class="p">])</span>
+        <span class="k">return</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize l&#39;objet de type TextAn lorsqu&#39;il est créé</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Utilise simplement les informations fournies dans l&#39;objet Textan_config</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : ne fait qu&#39;initialiser l&#39;objet de type TextAn</span>
+
+<span class="sd">        Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Initialisation des champs nécessaires aux fonctions fournies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cip</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rep_aut</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngrams_auteurs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized_ngrams_auteurs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oeuvres_auteurs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

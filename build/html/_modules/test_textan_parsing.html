@@ -1,0 +1,764 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>test_textan_parsing &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=de505bba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">test_textan_parsing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de test_textan_parsing</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Code utilitaire pour lire et interpréter la ligne de commande pour test_textan.py</span>
+
+<span class="sd">    Copyright 2018-2026 F. Mailhot</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Info sur configargparse : https://github.com/bw2/ConfigArgParse :</span>
+<span class="c1">#   Supporte de façon unifiée des fichiers de configuration et des paramètres en ligne de commande</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">configargparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">timeit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">handle_unicode_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">HandleUnicodeCommon</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">debug_handler_common</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PrintUtil</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrintUtil</span>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParsingClassTextAn</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classe qui effectue la lecture des paramètres d&#39;exécution :</span>
+<span class="sd">        - Permet de lire le fichier de configuration (test_textan_config.yml)</span>
+<span class="sd">        - Permet de lire les paramètres de la ligne de commande</span>
+<span class="sd">        - Les paramètres de la ligne de commande ont priorité sur ceux du fichier de configuration</span>
+
+<span class="sd">    Copyright 2024-2026 F. Mailhot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ParsingClassTextAn.parse_cli">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.parse_cli">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_cli</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Utilise le module configargparse pour :</span>
+<span class="sd">            - Enregistrer les commandes à reconnaître</span>
+<span class="sd">            - Lire le fichier de configuration</span>
+<span class="sd">            - Lire la ligne de commande</span>
+<span class="sd">            - Créer le champ self.args qui récupère la structure produite par la lecture des paramètres</span>
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Rien n&#39;est passé en paramètre, tout est extrait par configargparse</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, toutes les commandes reconnues sont comprises dans self.args</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s2">&quot;test_textan_config.yml&quot;</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">configargparse</span><span class="o">.</span><span class="n">ArgParser</span><span class="p">(</span>
+            <span class="n">default_config_files</span><span class="o">=</span><span class="p">[</span><span class="n">config_file_path</span><span class="p">],</span>
+            <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;test_textan.py&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Définit un fichier de configuration différent de celui par défaut</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s1">&#39;-config&#39;</span><span class="p">,</span> <span class="s1">&#39;--config&#39;</span><span class="p">,</span>
+            <span class="n">is_config_file</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Nom du fichier de configuration différent de celui par défaut&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Répertoire où se trouvent les auteurs, leurs oeuvres, la liste d&#39;étudiants, la liste d&#39;oeuvres inconnues</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--d&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Répertoire contenant les sous-repertoires des auteurs </span><span class="se">\</span>
+<span class="s2">                            (TextesPourEtudiants par défaut)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Indication du répertoire où se trouvent les programmes étudiants, par rapport au répertoire de travail</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--dir_code&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Répertoire contenant la liste des CIPs et leur code textan_CIP1_CIP2.py (&#39;.&#39; par défaut)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Fichier qui contient la liste des cips pour lesquels on doit exécuter le code</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--e&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Nom du fichier qui contient la liste des CIP1_CIP2 </span><span class="se">\</span>
+<span class="s2">                            pour exécuter textan_CIP1_CIP2.py </span><span class="se">\</span>
+<span class="s2">                            (etudiants.txt par défaut)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Type de n-gramme à utiliser pour l&#39;analyse et la génération aléatoire de textes</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--m&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Mode (1 ou 2 ou 3 ou ... 20) - (4 par défaut) </span><span class="se">\</span>
+<span class="s2">                            unigrammes ou digrammes ou trigrammes ou ... 20-grammes&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Indication du K-ième plus fréquent n-gramme à imprimer pour chacun des auteurs</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--K&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Indication du K-ième plus fréquent n-gramme a imprimer pour chacun des auteurs&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Répertoire où trouver les fichiers inconnus et leur liste (-F)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--f_dir&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Nom du répertoire où se trouvent les fichiers inconnus et leur liste&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Fichier unique pour lequel on recherche l&#39;auteur</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--f&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Fichier inconnu pour lequel on recherche un auteur&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Liste de fichiers pour lesquels on recherche l&#39;auteur</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--F&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Nom du fichier qui contient la liste des fichiers inconnus pour lesquels on recherche un auteur&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Les arguments qui suivent sont tous liés à la génération de texte aléatoire</span>
+        <span class="c1"># Génération d&#39;un texte aléatoire pour cet auteur</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--g&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Génération de texte aléatoire pour cet auteur spécifique&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Génération d&#39;un texte aléatoire basé sur les fréquences normalisées de tous les auteurs identifiés</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--G&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Génération d&#39;un texte aléatoire par auteur identifié dans le fichier indiqué&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Génération d&#39;un texte aléatoire par auteur identifié</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--G_fusion&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Génération de texte avec les statistiques combinées des auteurs identifiés dans le fichier indiqué&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--g_size&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Taille du texte à générer (500 mots par défaut)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--g_name&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;R|&quot;</span>
+                 <span class="s2">&quot;Nom du fichier à générer, avec jetons:&quot;</span>
+                 <span class="s2">&quot;&lt;CIP&gt;: cip de l&#39;équipe&quot;</span>
+                 <span class="s2">&quot;&lt;AUT&gt;: nom de l&#39;auteur&quot;</span>
+                 <span class="s2">&quot;&lt;DATE&gt;: date de calendrier&quot;</span>
+                 <span class="s2">&quot;&lt;HR&gt;: heure de création&quot;</span>
+                 <span class="s2">&quot;&lt;MIN&gt;: minute&quot;</span>
+                 <span class="s2">&quot;&lt;SEC&gt;: seconde&quot;</span>
+        <span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--g_dir&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Répertoire où les fichiers à générer seront créés&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># Par défaut, les textes générés sont passés par le &quot;text prettifier&quot;.</span>
+        <span class="c1"># Ce paramètre permet de ne pas le faire, s&#39;il est mis à False</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--pretty&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Utiliser (ou non) l&#39;appel au système de reformattage des textes générés pour les rendre plus beaux&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Mode verbose (imprime beaucoup d&#39;information de débogage)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--v&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Mode verbose&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Retire complètement les signes de ponctuation</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--noPonc&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Retirer la ponctuation&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Nombre maximal d&#39;appels récursifs (par défaut, Python en permet 1000)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--recursion&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Récursion maximale permise (Python en permet 1000 par défaut)&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--golden&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Compare les résultats avec la version &#39;golden&#39; indiquée par ce paramètre&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Tous les prints se feront dans ce fichier (fichier de log).</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--fichier_res&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Tous les prints seront faits dans ce fichier&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># Tous les fichiers créés le seront dans ce répertoire</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--dir_res&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Tous les résultats seront ajoutés dans ce répertoire (sous le répertoire courant)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Indique que les print apparaissant dans le code étudiant ne seront pas actifs</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--no_stdout_etudiant&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Empêcher l&#39;impression par le code étudiant&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Limite le temps maximal d&#39;exécution (en secondes) de chaque programme étudiant</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--timeout&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Temps maximum (secondes) pour l&#39;exécution du système (120 secondes par défaut)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Comparaison des auteurs (calcule le cosinus de l&#39;angle entre les vecteurs des différents auteurs)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--compare_auteurs&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Indique les proximités des textes des différents auteurs, en calculant le cosinus de l&#39;angle&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.read_lines">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.read_lines">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_lines</span><span class="p">(</span><span class="n">fichier_a_lire</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lit les lignes d&#39;un fichier et retourne un tableau contenant une entrée par ligne :</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            fichier_a_lire (str) : Nom d&#39;un fichier contenant une chaîne de caractères par ligne</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            list : retourne une liste avec une entrée par ligne (une chaîne de caractères par ligne)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lignes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fichier_a_lire</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lignes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">HandleUnicodeCommon</span><span class="o">.</span><span class="n">normalize_string</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">lignes</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.set_log_file">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.set_log_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_log_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prépare l&#39;impression (à l&#39;écran ou dans un fichier de log) :</span>
+<span class="sd">            - Utilise la classe PrintUtil pour déterminer le type d&#39;impression</span>
+<span class="sd">            - Désactive au besoin l&#39;impression dans le code étudiant</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Rien n&#39;est passé en paramètre, tout vient de l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : L&#39;impression est prête à être effectuée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_stdout_print_etudiant</span><span class="p">:</span>  <span class="c1"># Désactivation de l&#39;impression standard par le code étudiant</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">block_stdout</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fichier_res</span><span class="p">:</span>  <span class="c1"># Pas de setup de logs si le fichier de résultat n&#39;a pas été demandé</span>
+            <span class="k">return</span>
+
+        <span class="c1"># https://stackoverflow.com/questions/5104957/how-do-i-create-a-file-at-a-specific-path</span>
+        <span class="n">cur_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_res</span><span class="p">:</span>
+            <span class="n">dir_res_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cur_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_res</span><span class="p">,</span> <span class="n">cur_path</span><span class="p">)))</span>
+            <span class="k">try</span><span class="p">:</span>  <span class="c1"># https://stackoverflow.com/questions/273192/how-can-i-safely-create-a-nested-directory</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dir_res_path</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dir_res_path</span> <span class="o">=</span> <span class="n">cur_path</span>
+
+        <span class="c1"># Préparer le chemin (path) et ouvrir le fichier de résultats</span>
+        <span class="c1">#   Voir: https://stackoverflow.com/questions/4675728/redirect-stdout-to-a-file-in-python</span>
+        <span class="c1">#   et: https://stackoverflow.com/questions/3597480/how-to-make-python-3-print-utf8</span>
+        <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_res_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fichier_res</span><span class="p">)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">set_stdout_path</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_res_path</span> <span class="o">=</span> <span class="n">dir_res_path</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_dir_code">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_dir_code">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_dir_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ajoute le répertoire de code au &quot;path&quot; :</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Toute l&#39;information requise est présente dans l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, le répertoire de code est accessible</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_code</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+            <span class="c1"># Ajout de ce répertoire dans sys.path pour trouver les fichiers textan_cip.py à charger</span>
+            <span class="c1"># https://stackoverflow.com/questions/67631/how-can-i-import-a-module-dynamically-given-the-full-path</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_code</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_get_kth_ngram">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_get_kth_ngram">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_get_kth_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Indique si le calcul du k-ième n-gramme doit être effectué :</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Prépare la détermination du k-ième n-gramme, si approprié</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, l&#39;attribut est configuré</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_get_kth_ngram</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_single_author_generation">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_single_author_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_single_author_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Indique si la génération de texte (un seul auteur) doit être effectuée :</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : L&#39;information requise est présente dans l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, l&#39;attribut est configuré</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteur_unique_pour_generation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">HandleUnicodeCommon</span><span class="o">.</span><span class="n">normalize_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auteur_unique_pour_generation</span><span class="p">))</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_multiple_author_generation">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_multiple_author_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_multiple_author_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Indique si la génération de textes multiples (un par auteur identifié) doit être effectuée :</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, la liste d&#39;auteurs est configurée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">liste_auteurs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_dir</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_lines</span><span class="p">(</span><span class="n">liste_auteurs</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_fused_authors_generation">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_fused_authors_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_fused_authors_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Indique si la génération de textes d&#39;auteurs fusionnés doit être effectuée :</span>
+<span class="sd">            - Les statistiques de l&#39;ensemble des auteurs identifiés seront combinées</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, la liste d&#39;auteurs est configurée, les attributs sont configurés</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation_commune</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_fused_gen_text</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">liste_auteurs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g_dir</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation_commune</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_lines</span><span class="p">(</span><span class="n">liste_auteurs</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_generation">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prépare la génération de textes aléatoires :</span>
+<span class="sd">            - Configuration pour génération à partir des statistiques d&#39;un auteur unique</span>
+<span class="sd">            - Ou bien génération de textes multiples pour tous les auteurs identifiés</span>
+<span class="sd">            - Ou bien génération avec des statistiques combinées de plusieurs auteurs</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, la liste d&#39;auteurs et les attributs adéquats sont configurés</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteur_unique_pour_generation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prepare_single_author_generation</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+                    <span class="s2">&quot;Utilisation simultanée de -g et -G: la génération de texte se fera pour l&#39;auteur unique&quot;</span><span class="p">,</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">auteur_unique_pour_generation</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation_commune</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+                    <span class="s2">&quot;Utilisation simultanée de -g et -T: la génération de texte se fera pour l&#39;auteur unique&quot;</span><span class="p">,</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">auteur_unique_pour_generation</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prepare_multiple_author_generation</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation_commune</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+                    <span class="s2">&quot;Utilisation simultanée de -G et -T: la génération de texte se fera séparément par auteur&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation_commune</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prepare_fused_authors_generation</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_real_path_oeuvre">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_real_path_oeuvre">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_real_path_oeuvre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Trouve le chemin vers les oeuvres dont les auteurs doivent être identifiés :</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, les chemins sont trouvés et ajoutés en attribut</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Recherche des oeuvres et ajout du path complet</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="p">:</span>
+            <span class="n">real_path_oeuvre</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="p">)):</span>
+                <span class="n">oeuvre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">oeuvre</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_dir</span><span class="p">,</span> <span class="n">oeuvre</span><span class="p">)</span>
+                <span class="n">real_path_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">oeuvre</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># https://docs.python.org/3/library/os.path.html#os.path.realpath</span>
+                    <span class="c1"># https://www.tutorialspoint.com/python/os_readlink.htm</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">real_path_file</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">real_path_file</span><span class="p">):</span>
+                            <span class="k">raise</span> <span class="ne">IsADirectoryError</span><span class="p">(</span><span class="n">real_path_file</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">real_path_oeuvre</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">real_path_file</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+                    <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;Le fichier&quot;</span><span class="p">,</span>
+                                        <span class="n">real_path_file</span><span class="p">,</span>
+                                        <span class="s2">&quot;n&#39;existe pas (paramètre -f ou -F)&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">print_debug_info</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">IsADirectoryError</span><span class="p">:</span>
+                    <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;Le nom&quot;</span><span class="p">,</span>
+                                        <span class="n">real_path_file</span><span class="p">,</span>
+                                        <span class="s2">&quot;correspond à un répertoire et non à un fichier&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">print_debug_info</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">real_path_oeuvre</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;Aucune oeuvre accessible&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">print_debug_info</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span> <span class="o">=</span> <span class="n">real_path_oeuvre</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.prepare_oeuvres_inconnues">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.prepare_oeuvres_inconnues">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_oeuvres_inconnues</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prépare la liste des oeuvres dont l&#39;auteur doit être identifié :</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, les chemins vers les oeuvres sont trouvés</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre_inconnue</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oeuvre_inconnue</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_oeuvres_inconnues</span><span class="p">:</span>
+            <span class="n">liste_oeuvres</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_oeuvres_inconnues</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_lines</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">liste_oeuvres</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepare_real_path_oeuvre</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.block_stdout_print">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.block_stdout_print">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">block_stdout_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Désactive l&#39;impression dans le code étudiant  :</span>
+<span class="sd">            - Utilise la classe PrintUtil pour effectuer la désactivation :</span>
+<span class="sd">                - Conserve sys.stdout pour rétablir au besoin</span>
+<span class="sd">                - Remplace stdout par /dev/null (impression inactive)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, l&#39;impression est désactivée (si demandé)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_stdout_print_etudiant</span><span class="p">:</span>
+            <span class="n">PrintUtil</span><span class="o">.</span><span class="n">block_stdout</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.config_with_params">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.config_with_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">config_with_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prépare l&#39;instance de test pour qu&#39;elle effectue toutes les actions requises :</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, l&#39;instance de test est prête à être exécutée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_log_file</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_stdout_print</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepare_dir_code</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepare_get_kth_ngram</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepare_generation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepare_oeuvres_inconnues</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_analyze</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text_multiple_auteurs</span>
+                           <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span>
+                           <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text</span>
+                           <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_fused_gen_text</span>
+                           <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_get_kth_ngram</span>
+                           <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_print_auteur_distance</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.transfer_params">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.transfer_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transfer_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transfère tous les paramètres lus dans le fichier de configuration ou en ligne de commande :</span>
+<span class="sd">            - Tous les paramètres rencontrés sont copiés dans l&#39;instance de test</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, la liste d&#39;auteurs est configurée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">param_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">match</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">case</span> <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;dir_code&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_code</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">etudiants</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;fichier_res&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fichier_res</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;dir_res&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_res</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;noPonc&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_punc</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">case</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s2">&quot;g&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auteur_unique_pour_generation</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;G_fusion&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation_commune</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;g_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s2">&quot;g_name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_name</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;g_dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_dir</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;f_dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_dir</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre_inconnue</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">liste_oeuvres_inconnues</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">case</span> <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s2">&quot;pretty&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">beautify</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s2">&quot;no_stdout_etudiant&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_stdout_print_etudiant</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s2">&quot;compare_auteurs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_print_auteur_distance</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span> <span class="s2">&quot;recursion&quot;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">case</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.read_cli">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.read_cli">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_cli</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise l&#39;objet en interprétant le fichier de configuration et la ligne de commande :</span>
+<span class="sd">            - Lit le fichier de configuration</span>
+<span class="sd">            - Lit la ligne de commande</span>
+<span class="sd">            - Modifie tous les champs qui y sont définis</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, toutes les commandes reconnues sont comprises dans self.args</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_cli</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="ParsingClassTextAn.get_sci">
+<a class="viewcode-back" href="../test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn.get_sci">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sci</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">digits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Représente une valeur par une chaîne de caractères avec digits chiffres après le point</span>
+<span class="sd">            - Lit le fichier de configuration</span>
+<span class="sd">            - Lit la ligne de commande</span>
+<span class="sd">            - Modifie tous les champs qui y sont définis</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            val (float) : La valeur en point flottant à représenter par une chaîne de caractères</span>
+<span class="sd">            digits (int) : Le nombre de chiffres après le point à conserver</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            tmp_str (str) : Retourne la chaîne de caractères représentant le nombre (possiblement tronqué)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">digits</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">tmp_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">digits</span><span class="si">}</span><span class="s2">E</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">mantissa</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="n">tmp_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">)</span>
+        <span class="n">exponent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="o">-</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">exponent</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">tmp_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">digits</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">tmp_str</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructeur pour la classe ParsingClassTestTextAn.  Initialisation de l&#39;ensemble des éléments requis</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Le constructeur lit :</span>
+<span class="sd">                le fichier de configuration,</span>
+<span class="sd">                la ligne de commande,</span>
+<span class="sd">                et ajuste l&#39;état de l&#39;objet ParsingClassTextAn en conséquence</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, la nouvelle instance de test est prête à être utilisée</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Création des champs de base de l&#39;instance, initialisés par la suite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan_module</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">golden_module</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auteurs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textan</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">golden</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cips</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cip</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_modules</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Initialisation des champs de l&#39;instance et de leurs valeurs par défaut</span>
+        <span class="c1"># Ces champs contrôlent l&#39;exécution du harnais de test</span>
+        <span class="c1"># Ces champs peuvent ensuite être modifiés</span>
+        <span class="c1">#       par le fichier de configuration</span>
+        <span class="c1">#       par la ligne de commande</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_code</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auteur_unique_pour_generation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">liste_auteurs_pour_generation_commune</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">liste_oeuvres_inconnues</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oeuvre_inconnue</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">liste_cips</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">etudiants</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngram_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kth_ngram</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_punc</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fichier_res</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_res</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_res_path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gen_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_name</span> <span class="o">=</span> <span class="s2">&quot;Gen_text_&lt;CIP&gt;_&lt;AUT&gt;_&lt;DATE&gt;.&lt;HR&gt;.&lt;MIN&gt;.&lt;SEC&gt;.txt&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g_dir</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rep_code</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_dir</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_find_author</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_analyze</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_fused_gen_text</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_gen_text_multiple_auteurs</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_get_kth_ngram</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_print_auteur_distance</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beautify</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_stdout_print_etudiant</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_cli</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span> <span class="o">=</span> <span class="n">debug_handler_common</span><span class="o">.</span><span class="n">DebugHandler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_with_params</span><span class="p">()</span>
+
+        <span class="c1"># Initialisation des chronomètres pour mesurer et possiblement arrêter l&#39;exécution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">default_timer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_handler</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
+
+        <span class="k">return</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

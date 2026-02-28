@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrintUtil &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=de505bba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">PrintUtil</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de PrintUtil</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Code utilitaire pour gérer l&#39;impression</span>
+
+<span class="sd">    Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextIO</span>
+
+
+<div class="viewcode-block" id="PrintUtil">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PrintUtil</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classe permettant la gestion de l&#39;impression :</span>
+
+<span class="sd">        - Permet de définir où se fera l&#39;impression des messages de test (écran ou fichier de log)</span>
+<span class="sd">        - Permet de désactiver les impressions effectuées dans le code étudiant</span>
+<span class="sd">        - Cette classe est utilisée directement, sans instance, en utilisant uniquement :</span>
+<span class="sd">            - des attributs de classe</span>
+<span class="sd">            - des méthodes de classe</span>
+<span class="sd">        - Les attributs de classe utilisés sont :</span>
+<span class="sd">            - __STDOUT : sys.stdout d&#39;origine : ne peut être modifié, conserve le &quot;vrai&quot; sys.stdout</span>
+<span class="sd">                - utilisé pour revenir à sys.stdout après blocage des print()</span>
+<span class="sd">            - _current : sys.stdout par défaut, peut être redéfini, utilisé par log_print()</span>
+
+<span class="sd">    Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Voir: https://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide</span>
+
+    <span class="c1"># __STDOUT : L&#39;intention ici est de déclarer une constante, initialisée au départ et jamais modifiée par la suite</span>
+    <span class="n">__STDOUT</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+
+    <span class="c1"># _current: Là où l&#39;impression se fera.  On peut modifier cette variable</span>
+    <span class="n">_current</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+
+<div class="viewcode-block" id="PrintUtil.set_stdout_path">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.set_stdout_path">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_stdout_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Redéfinit le fichier courant pour l&#39;impression effectuée par la classe (méthode log_print) :</span>
+<span class="sd">            - Permet d&#39;identifier où se fera l&#39;impression (sys.stdout habituellement, ou fichier de log)</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            path (str) : Le chemin complet vers le nouveau fichier de log</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, le fichier d&#39;impression des logs est redéfini pour la méthode log_print</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">close_stdout</span><span class="p">()</span>  <span class="c1"># Fermer le fichier de log s&#39;il était utilisé</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="PrintUtil.reset_stdout">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.reset_stdout">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_stdout</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remet sys.stdout comme fichier d&#39;impression :</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, le fichier courant d&#39;impression a été fermé et remplacé par sys.stdout</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">close_stdout</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__STDOUT</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="PrintUtil.get_stdout">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.get_stdout">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_stdout</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextIO</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le pointeur vers le fichier utilisé pour l&#39;impression avec la méthode log_print :</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (TextIO) : Au retour, le fichier courant (pour l&#39;impression) est retourné</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span></div>
+
+
+<div class="viewcode-block" id="PrintUtil.close_stdout">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.close_stdout">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close_stdout</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ferme le fichier associé à l&#39;impression par la méthode log_print :</span>
+<span class="sd">            - Appelé à la fin, pour fermer correctement le fichier de log</span>
+<span class="sd">            - Si le &quot;fichier&quot; de log est l&#39;écran (sys.stdout), ne fait rien</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__STDOUT</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__STDOUT</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="PrintUtil.get_sys_stdout">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.get_sys_stdout">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sys_stdout</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextIO</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne la version originale de sys.stdout :</span>
+
+<span class="sd">       Returns :</span>
+<span class="sd">            (TextIO) : Au retour, sys.stdout original est retourné</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__STDOUT</span></div>
+
+
+<div class="viewcode-block" id="PrintUtil.block_stdout">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.block_stdout">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">block_stdout</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Redéfinit sys.stdout pour l&#39;impression dans le code étudiant (print standards) :</span>
+<span class="sd">            - Remplace sys.stdout par /dev/null (impression inactive)</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, sys.stdout est redéfini vers os.devnull</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="PrintUtil.unblock_stdout">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.unblock_stdout">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unblock_stdout</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remet la valeur par défaut de sys.stdout :</span>
+<span class="sd">            - permet d&#39;imprimer de nouveau normalement avec print()</span>
+<span class="sd">            - n&#39;est utilisé que si block_stdout a été utilisé auparavant</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, sys.stdout original est revenu</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__STDOUT</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__STDOUT</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="PrintUtil.log_print">
+<a class="viewcode-back" href="../PrintUtil.html#PrintUtil.PrintUtil.log_print">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_print</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Imprime dans le fichier de log :</span>
+<span class="sd">            - Par défaut, si ce qui est imprimé se termine par un retour de chariot/newline</span>
+<span class="sd">                (end=&#39;newline/carriage return&#39; par défaut), alors effectuer un flush après impression</span>
+<span class="sd">            - Pour contrôler précisément cette action, &quot;flush=True/False&quot; peut être utilisé comme paramètre</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            args :      Paramètres habituels de print()</span>
+<span class="sd">            kwargs :    Paramètres habituels de print()</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, l&#39;impression a eu lieu dans le fichier de log (par défaut, sys.stdout)</span>
+
+<span class="sd">        Copyright 2025-2026 F. Mailhot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Imprime dans le fichier de log (flush seulement si fin de ligne)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Permet à l&#39;appelant de forcer/empêcher le flush : PrintUtil.log_print(..., flush=True/False)</span>
+        <span class="n">flush_override</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;flush&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_current</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">flush_override</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">flush_override</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Auto : flush seulement si ce qui vient d&#39;être imprimé termine une ligne</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">end</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_current</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">return</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

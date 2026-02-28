@@ -1,0 +1,582 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module test_textan &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=de505bba"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Module test_textan_command" href="test_textan_command.html" />
+    <link rel="prev" title="Module textan_common" href="textan_common.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module test_textan</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#diagramme-de-classe">Diagramme de classe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-test_textan">Code du module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#test_textan.TestTextAn"><code class="docutils literal notranslate"><span class="pre">TestTextAn</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.add_cwd_to_sys_path"><code class="docutils literal notranslate"><span class="pre">TestTextAn.add_cwd_to_sys_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.analyze"><code class="docutils literal notranslate"><span class="pre">TestTextAn.analyze()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.check_and_setup_golden"><code class="docutils literal notranslate"><span class="pre">TestTextAn.check_and_setup_golden()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.check_something_to_do"><code class="docutils literal notranslate"><span class="pre">TestTextAn.check_something_to_do()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.compare_auteurs"><code class="docutils literal notranslate"><span class="pre">TestTextAn.compare_auteurs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.find"><code class="docutils literal notranslate"><span class="pre">TestTextAn.find()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.gen_from_dict"><code class="docutils literal notranslate"><span class="pre">TestTextAn.gen_from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.generate"><code class="docutils literal notranslate"><span class="pre">TestTextAn.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.get_cips"><code class="docutils literal notranslate"><span class="pre">TestTextAn.get_cips()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.get_gen_file_name"><code class="docutils literal notranslate"><span class="pre">TestTextAn.get_gen_file_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.get_kth_ngram"><code class="docutils literal notranslate"><span class="pre">TestTextAn.get_kth_ngram()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.get_proximity_stats"><code class="docutils literal notranslate"><span class="pre">TestTextAn.get_proximity_stats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.get_total_execution_time"><code class="docutils literal notranslate"><span class="pre">TestTextAn.get_total_execution_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.get_unused_ngram_stats"><code class="docutils literal notranslate"><span class="pre">TestTextAn.get_unused_ngram_stats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.import_textan_cip"><code class="docutils literal notranslate"><span class="pre">TestTextAn.import_textan_cip()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.join_dicts"><code class="docutils literal notranslate"><span class="pre">TestTextAn.join_dicts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.load_cip_code"><code class="docutils literal notranslate"><span class="pre">TestTextAn.load_cip_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.print_auteur_distance"><code class="docutils literal notranslate"><span class="pre">TestTextAn.print_auteur_distance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.print_params"><code class="docutils literal notranslate"><span class="pre">TestTextAn.print_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.register_operations"><code class="docutils literal notranslate"><span class="pre">TestTextAn.register_operations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.setup_instance_param"><code class="docutils literal notranslate"><span class="pre">TestTextAn.setup_instance_param()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.shorten_filename"><code class="docutils literal notranslate"><span class="pre">TestTextAn.shorten_filename()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test_textan.TestTextAn.sort_author_distance"><code class="docutils literal notranslate"><span class="pre">TestTextAn.sort_author_distance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#test_textan.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module test_textan</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/test_textan.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <a class="reference internal image-reference" href="_images/UdeS_logo_h_pms347-crop.jpg"><img alt="_images/UdeS_logo_h_pms347-crop.jpg" src="_images/UdeS_logo_h_pms347-crop.jpg" style="width: 200px;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="module-test-textan">
+<h1>Module test_textan<a class="headerlink" href="#module-test-textan" title="Lien vers cette rubrique"></a></h1>
+<section id="diagramme-de-classe">
+<h2>Diagramme de classe<a class="headerlink" href="#diagramme-de-classe" title="Lien vers cette rubrique"></a></h2>
+<a class="reference internal image-reference" href="_images/classes_test_textan.png"><img alt="_images/classes_test_textan.png" src="_images/classes_test_textan.png" style="width: 1000.0000000000001px; height: 860.2941176470589px;" />
+</a>
+</section>
+<section id="module-test_textan">
+<span id="code-du-module"></span><h2>Code du module<a class="headerlink" href="#module-test_textan" title="Lien vers cette rubrique"></a></h2>
+<p>Programme python pour l’évaluation du code de détection des auteurs et de génération de textes</p>
+<p>Copyright 2018-2026 F. Mailhot</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="test_textan.TestTextAn">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">test_textan.</span></span><span class="sig-name descname"><span class="pre">TestTextAn</span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <a class="reference internal" href="test_textan_parsing.html#test_textan_parsing.ParsingClassTextAn" title="test_textan_parsing.ParsingClassTextAn"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParsingClassTextAn</span></code></a></p>
+<dl class="simple">
+<dt>Classe à utiliser pour valider la résolution de la problématique :</dt><dd><ul class="simple">
+<li><p>Contient tout le nécessaire pour tester la problématique.</p></li>
+</ul>
+</dd>
+<dt>Pour valider la solution de la problématique, effectuer :</dt><dd><ul class="simple">
+<li><p>python test_textan.py -help (Indique tous les arguments et options disponibles)</p></li>
+<li><p>Vous pouvez aussi modifier le fichier test_textan_config.yml</p></li>
+</ul>
+</dd>
+</dl>
+<p>Copyright 2018-2026 F. Mailhot</p>
+<p>Constructeur pour la classe TestTextAn.  Initialisation de l’ensemble des éléments requis :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Au besoin, création d’une instance « golden » de TextAn, pour la vérification et la correction</p></li>
+<li><p>Lecture des cips des équipes d’étudiants</p></li>
+<li><p>Mise en mémoire du répertoire de démarrage</p></li>
+<li><dl class="simple">
+<dt>Validation qu’au moins l’un de :</dt><dd><ul>
+<li><p>la ligne de commande</p></li>
+<li><p>le fichier de configuration</p></li>
+<li><dl class="simple">
+<dt>indique une action à effectuer</dt><dd><ul>
+<li><p>(génération de texte, découverte d’auteur, calcul du k-ième n-gramme, proximité d’auteurs)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Création d’une instance de CommandTextan, pour enregistrer puis exécuter une série de méthodes</p></li>
+<li><dl class="simple">
+<dt>Utilise le patron de conception (design pattern) « command »</dt><dd><ul>
+<li><dl class="simple">
+<dt>Enregistre la séquence d’opérations à exécuter avec le code TextAn :</dt><dd><ul>
+<li><p>Charge le code fourni par l’équipe</p></li>
+<li><p>Invoque la méthode d’analyse de texte de l’équipe</p></li>
+<li><dl class="simple">
+<dt>Ensuite, au besoin :</dt><dd><ul>
+<li><p>Invoque la méthode de génération de texte aléatoire</p></li>
+<li><p>Calcule la proximité d’un texte inconnu avec les textes des auteurs fournis</p></li>
+<li><p>Trouve le k-ième ngramme le plus fréquent pour un certain auteur</p></li>
+<li><p>Trouve la distance entre les oeuvres des différents auteurs</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Création d’une instance de TextBeautifier, qui permet d’améliorer le format des textes générés</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Le constructeur lit la ligne de commande et ajuste l’état de l’objet TestTextAn en conséquence</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, la nouvelle instance de test est prête à être utilisée</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.add_cwd_to_sys_path">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_cwd_to_sys_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.add_cwd_to_sys_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.add_cwd_to_sys_path" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Ajoute le répertoire d’exécution local aux chemins utilisés par le système.</dt><dd><p>Sinon, si test_textan.py est un lien symbolique, les fichiers textan_CIP1_CIP2.py ne sont pas trouvés</p>
+</dd>
+<dt>Args :</dt><dd><p>(void) : Utilisation des informations système</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, le répertoire d’exécution est ajouté au chemin système</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.analyze">
+<span class="sig-name descname"><span class="pre">analyze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.analyze"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.analyze" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Effectue l’analyse des textes fournis (calcul des fréquences pour chacun des auteurs) avec le code étudiant</dt><dd><ul class="simple">
+<li><p>Appelle la méthode d’analyse des textes self.textan.analyze() fournie par les étudiants</p></li>
+<li><p>Normalise les vecteurs de chacun des auteurs avec la méthode textan.normalize_ngrams_auteurs</p></li>
+</ul>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, les textes des auteurs ont été analysés</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.check_and_setup_golden">
+<span class="sig-name descname"><span class="pre">check_and_setup_golden</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.check_and_setup_golden"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.check_and_setup_golden" title="Lien vers cette définition"></a></dt>
+<dd><p>Vérifie si une version « golden » doit être conservée</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Le nom de la version « golden » est disponible dans le champ args</p>
+</dd>
+<dt>Returns :</dt><dd><p>(Any) : Au retour, l’instance de test du code golden est retournée</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.check_something_to_do">
+<span class="sig-name descname"><span class="pre">check_something_to_do</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.check_something_to_do"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.check_something_to_do" title="Lien vers cette définition"></a></dt>
+<dd><p>Vérifie que les paramètres d’entrée indiquent quelque chose à faire</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>(void) : Toute l’information nécessaire est présente dans l’objet</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, le champ something_to_do indique le statut.  S’il n’y a rien à faire, sortie</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.compare_auteurs">
+<span class="sig-name descname"><span class="pre">compare_auteurs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.compare_auteurs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.compare_auteurs" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Calcule la proximité entre chacun des auteurs (nombre entre 0 et 1) :</dt><dd><ul class="simple">
+<li><p>Effectue le produit scalaire normalisé entre les vecteurs des auteurs</p></li>
+</ul>
+</dd>
+<dt>Returns :</dt><dd><p>[] : Retourne un tableau prêt pour l’impression, avec les noms d’auteurs et les valeurs de comparaison</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.find" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Calcule la proximité d’un certain nombre de textes inconnus avec le « style »</dt><dd><p>de chacun des auteurs avec le code étudiant</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, les textes inconnus ont été comparés aux textes des auteurs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.gen_from_dict">
+<span class="sig-name descname"><span class="pre">gen_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auteur</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gen_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.gen_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.gen_from_dict" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Prépare la génération d’un texte aléatoire et appelle la génération fournie par les étudiants:</dt><dd><ul class="simple">
+<li><p>Prépare le nom du fichier à créer</p></li>
+<li><p>Ouvre le fichier en écriture</p></li>
+<li><p>Appelle la méthode de création de texte aléatoire</p></li>
+<li><p>Ferme le fichier créé</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>auteur (str) : nom de l’auteur (ou des auteurs) ciblé
+gen_dict (dict) : dictionnaire de n-grammes utilisé pour la génération</p>
+</dd>
+<dt>Returns :</dt><dd><p>(list[Any]) : Retourne une liste d’informations sur le fichier généré</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.generate" title="Lien vers cette définition"></a></dt>
+<dd><p>Effectue la génération d’un texte aléatoire suivant les statistiques d’un certain auteur (code étudiant)</p>
+<dl class="simple">
+<dt>Returns :</dt><dd><dl class="simple">
+<dt>(void)<span class="classifier">Rien n’est retourné</span><span class="classifier">au retour, un texte aléatoire a été généré, basé sur les statistiques</span></dt><dd><p>d’un seul auteur, ou de l’ensemble des auteurs identifiés</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.get_cips">
+<span class="sig-name descname"><span class="pre">get_cips</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.get_cips"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.get_cips" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Lit le fichier etudiants.txt, trouve les CIPs, et retourne la liste</dt><dd><dl class="simple">
+<dt>Le CIP est obtenu du fichier etudiants.txt, dans le répertoire courant</dt><dd><p>ou tel qu’indiqué en paramètre (option -dir_code)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, tous les cips sont inclus dans la liste self.cips</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.get_gen_file_name">
+<span class="sig-name descname"><span class="pre">get_gen_file_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auteur</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.get_gen_file_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.get_gen_file_name" title="Lien vers cette définition"></a></dt>
+<dd><p>Définit le nom du fichier à générer</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>auteur (str) : Nom de l’auteur à utiliser dans le nom du fichier</p>
+</dd>
+<dt>Returns :</dt><dd><p>name (str) : Nom du fichier à générer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.get_kth_ngram">
+<span class="sig-name descname"><span class="pre">get_kth_ngram</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.get_kth_ngram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.get_kth_ngram" title="Lien vers cette définition"></a></dt>
+<dd><p>Obtient le k-ième plus fréquent n-gramme d’un certain auteur avec le code étudiant</p>
+<dl class="simple">
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, le k-ième n-gramme le plus fréquent a été imprimé</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.get_proximity_stats">
+<span class="sig-name descname"><span class="pre">get_proximity_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_results</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.get_proximity_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.get_proximity_stats" title="Lien vers cette définition"></a></dt>
+<dd><dl>
+<dt>Calcule la distance moyenne des résultats obtenus pendant l’analyse d’une nouvelle oeuvre :</dt><dd><ul class="simple">
+<li><p>Calcule la distance moyenne (cosinus) entre les auteurs potentiels identifiés et la nouvelle oeuvre</p></li>
+<li><p>Calcule l’écart type du cosinus entre les auteurs potentiels identifiés et la nouvelle oeuvre</p></li>
+<li><p>Calcule le score Z pour l’auteur le plus probable</p></li>
+<li><p>Si aucune distance n’a été passée en paramètre, retourner des valeurs par défaut</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>word_number (int) : Nombre de mots générés dans le fichier de la nouvelle oeuvre
+analysis_results (Liste[(string, float)]) : Liste de tuples (auteurs, niveau de proximité), où la proximité</p>
+<blockquote>
+<div><p>est un nombre entre 0 et 1)</p>
+</div></blockquote>
+</dd>
+<dt>Returns :</dt><dd><p>(str, float, float, float, float) : Retourne le nom de l’auteur et les statistiques obtenues</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.get_total_execution_time">
+<span class="sig-name descname"><span class="pre">get_total_execution_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.get_total_execution_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.get_total_execution_time" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule et affiche le temps d’exécution total</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cip</strong> (<em>str</em>) – Ensemble de cips des membres de l’équipe</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, le temps d’exécution a été imprimé</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.get_unused_ngram_stats">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_unused_ngram_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_textan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auteur</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.get_unused_ngram_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.get_unused_ngram_stats" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule le nombre de n-grammes de la nouvelle oeuvre qui n’existent pas pour l’auteur potentiel</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>use_textan (TextAn) : Utilise le code golden ou le code local
+filepath (str) : Path du fichier de texte
+auteur (str) : Auteur du texte</p>
+</dd>
+<dt>Returns :</dt><dd><p>(float) : La proportion de n-grammes de la nouvelle oeuvre n’existant pas pour l’auteur</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.import_textan_cip">
+<span class="sig-name descname"><span class="pre">import_textan_cip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">import_cip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.import_textan_cip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.import_textan_cip" title="Lien vers cette définition"></a></dt>
+<dd><p>Importe le fichier textan_CIP1_CIP2.py, où « CIP1_CIP2 » est passé dans le paramètre import_cip</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>import_cip (str) : Contient « CIP1_CIP2 », les cips pour le code à tester</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, le module textan_CIP1_CIP2 est importé et remplace le précédent</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.join_dicts">
+<span class="sig-name descname"><span class="pre">join_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalized_auteurs_ngrams</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.join_dicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.join_dicts" title="Lien vers cette définition"></a></dt>
+<dd><p>Crée un dictionnaire qui combine les statistiques de tous les auteurs</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>normalized_auteurs_ngrams ([dict]) : tableau de dictionnaires des auteurs (normalisés)</p>
+</dd>
+<dt>Returns :</dt><dd><p>res_dict (dict) : Dictionnaire normalisé de la somme des dictionnaires des auteurs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.load_cip_code">
+<span class="sig-name descname"><span class="pre">load_cip_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student_cip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.load_cip_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.load_cip_code" title="Lien vers cette définition"></a></dt>
+<dd><p>Charge le code étudiant en mémoire, initialise l’instance, initialise le débogage</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>student_cip (str) : Cips de l’ensemble des membres de l’équipe d’APP</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, le code étudiant a été chargé en mémoire</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.print_auteur_distance">
+<span class="sig-name descname"><span class="pre">print_auteur_distance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.print_auteur_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.print_auteur_distance" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule et imprime la proximité entre chacun des auteurs (nombre entre 0 et 1)</p>
+<dl class="simple">
+<dt>Returns :</dt><dd><p>void : Rien n’est retourné : au retour, la distance entre les différents auteurs a été imprimée</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.print_params">
+<span class="sig-name descname"><span class="pre">print_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.print_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.print_params" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Mode verbose, imprime l’ensemble des paramètres utilisés pour ce test :</dt><dd><ul class="simple">
+<li><p>Valeur des paramètres par défaut s’ils n’ont pas été modifiés sur la ligne de commande</p></li>
+<li><p>Ensemble des tests demandés</p></li>
+</ul>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Ne fait qu’imprimer les valeurs contenues dans self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.register_operations">
+<span class="sig-name descname"><span class="pre">register_operations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.register_operations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.register_operations" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Enregistre l’ensemble des méthodes à exécuter pour vérifier le code.</dt><dd><p>Les différentes méthodes doivent être enregistrées dans l’ordre dans lequel leur exécution doit s’effectuer</p>
+</dd>
+<dt>Args :</dt><dd><p>(void) : L’enregistrement se fait avec les méthodes définies dans l’objet</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné : au retour, toutes les méthodes ont été enregistrées</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.setup_instance_param">
+<span class="sig-name descname"><span class="pre">setup_instance_param</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.setup_instance_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.setup_instance_param" title="Lien vers cette définition"></a></dt>
+<dd><p>Définit les paramètres de l’instance (étudiante) à tester</p>
+<dl class="simple">
+<dt>Returns :</dt><dd><p>(void) : Rien n’est retourné</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.shorten_filename">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shorten_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.shorten_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.shorten_filename" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Retourne un nom écourté, de longueur maximum max_size.</dt><dd><ul class="simple">
+<li><p>Les trois derniers caractères du nom écourté seront « … »</p></li>
+<li><p>Si le fichier est déjà de taille plus petite ou égale au maximum, retourne une copie entière</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>filename (str) : Nom du fichier (avec path complet)
+max_size (int) : taille maximum du nom à retourner</p>
+</dd>
+<dt>Returns :</dt><dd><p>(str) : Le fichier écourté, se terminant par « … »</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="test_textan.TestTextAn.sort_author_distance">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sort_author_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">author_res</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/test_textan.html#TestTextAn.sort_author_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.TestTextAn.sort_author_distance" title="Lien vers cette définition"></a></dt>
+<dd><p>Retourne le deuxième élément du vecteur (auteur, proximité) (utilisé pour le tri de la liste des auteurs)</p>
+<dl class="simple">
+<dt>Args :</dt><dd><p>([str, float]) : Liste des auteurs et valeur de proximité avec le texte inconnu
+(résultat du produit scalaire) pour chacun des auteurs</p>
+</dd>
+<dt>Returns :</dt><dd><p>(float) : Valeur de la proximité de l’auteur avec le texte inconnu</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="test_textan.main">
+<span class="sig-prename descclassname"><span class="pre">test_textan.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/test_textan.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#test_textan.main" title="Lien vers cette définition"></a></dt>
+<dd><dl class="simple">
+<dt>Démarrage de l’exécution du code de la problématique, pour l’ensemble des équipes :</dt><dd><ul class="simple">
+<li><p>Initialiser une instance de test</p></li>
+<li><dl class="simple">
+<dt>Pour chaque équipe (séquence de cips) :</dt><dd><ul>
+<li><p>Faire une copie fraiche de l’instance de test</p></li>
+<li><dl class="simple">
+<dt>Exécuter la série de commandes préparées à l’aide du patron de conception « command » :</dt><dd><ul>
+<li><p>Préparation effectuée dans le constructeur TestTextAn</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Si l’ensemble du code est trop long à s’exécuter (par défaut, 2 minutes), interrompre l’exécution</p></li>
+<li><p>Attraper toutes les exceptions non-traitées dans le code étudiant</p></li>
+</ul>
+</dd>
+<dt>Args :</dt><dd><p>(void) : Tout ce qui est nécessaire est défini à l’intérieur de la méthode</p>
+</dd>
+<dt>Returns :</dt><dd><p>(void) : Au retour, l’exécution est terminée</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation créée le 19 févr. 2026.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="textan_common.html" class="btn btn-neutral float-left" title="Module textan_common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="test_textan_command.html" class="btn btn-neutral float-right" title="Module test_textan_command" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

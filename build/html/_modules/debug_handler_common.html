@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>debug_handler_common &mdash; Documentation Problématique_GIF270 1.1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=de505bba"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Problématique_GIF270
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../textan_cip1_cip2.html">Module textan_cip1_cip2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../debug_handler_common.html">Module debug_handler_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handle_unicode_common.html">Module handle_unicode_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PrintUtil.html">Module PrintUtil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smart_formatter_common.html">Module smart_formatter_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../textan_common.html">Module textan_common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan.html">Module test_textan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_command.html">Module test_textan_command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../test_textan_parsing.html">Module test_textan_parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../text_beautifier.html">Module test_beautifier</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Problématique_GIF270</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">debug_handler_common</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de debug_handler_common</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot; Code utilitaire pour gérer les exceptions et mesurer approximativement le temps d&#39;exécution</span>
+
+<span class="sd">    Copyright 2018-2026 F. Mailhot </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">timeit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PrintUtil</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrintUtil</span>
+
+
+<div class="viewcode-block" id="DebugHandlerTimeOutException">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandlerTimeOutException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DebugHandlerTimeOutException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cette classe définit un nouveau type d&#39;exception, utilisé pour capturer les problèmes d&#39;exécution trop longue</span>
+<span class="sd">    dans le code étudiant</span>
+
+<span class="sd">    Copyright 2024-2026 F. Mailhot </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="DebugHandler">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DebugHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classe à utiliser pour détecter et gérer les exceptions dans le code étudiant :</span>
+
+<span class="sd">    Copyright 2024-2026 F. Mailhot </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_cip</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">default_timer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span>
+
+<div class="viewcode-block" id="DebugHandler.print_debug_info">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.print_debug_info">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_debug_info</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Méthode statique pour indiquer où a eu lieu une exception :</span>
+<span class="sd">            - Accède au &quot;stack trace&quot;</span>
+<span class="sd">            - Imprime le type d&#39;exception, la valeur, la ligne de code et une portion du &quot;stack trace&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            (void) : Toute l&#39;information imprimée provient du &quot;stack trace&quot;</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;Exception:&quot;</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="s2">&quot;, Valeur:&quot;</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="s2">&quot;, Trace:&quot;</span><span class="p">,</span> <span class="n">exc_traceback</span><span class="p">)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;Ligne:&quot;</span><span class="p">,</span> <span class="n">exc_traceback</span><span class="o">.</span><span class="n">tb_lineno</span><span class="p">)</span>
+        <span class="n">traceback</span><span class="o">.</span><span class="n">print_tb</span><span class="p">(</span><span class="n">exc_traceback</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">PrintUtil</span><span class="o">.</span><span class="n">get_stdout</span><span class="p">())</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.set_student_cip">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.set_student_cip">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_student_cip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">student_cip</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Méthode qui permet d&#39;associer le(s) cip(s) au débogage du code courant</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            student_cip (str) : cip associé au code étudiant qui sera exécuté</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_cip</span> <span class="o">=</span> <span class="n">student_cip</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.set_start_time">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.set_start_time">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_start_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Temps de début de l&#39;exécution du code étudiant.  Permet de mesurer approximativement la performance</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Ne fait que mémoriser le temps courant</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">timeit</span><span class="o">.</span><span class="n">default_timer</span><span class="p">()</span>
+        <span class="p">)</span>  <span class="c1"># Permet de mesurer (approximativement) le temps d&#39;exécution</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.set_start_time2">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.set_start_time2">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_start_time2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Temps de début de l&#39;exécution du code étudiant.  Permet de mesurer approximativement la performance</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Ne fait que mémoriser le temps courant</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">timeit</span><span class="o">.</span><span class="n">default_timer</span><span class="p">()</span>
+        <span class="p">)</span>  <span class="c1"># Permet de mesurer (approximativement) le temps d&#39;exécution</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.start_execution_timing">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.start_execution_timing">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_execution_timing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Démarre le chronomètre pour identifier une exécution trop longue, conserve le temps de départ</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Tout est compris dans l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_timeout</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
+            <span class="p">)</span>  <span class="c1"># Limite le temps d&#39;exécution (le code de certains étudiants ne se termine pas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_start_time</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.stop_execution_timing">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.stop_execution_timing">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_execution_timing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule le temps total d&#39;exécution</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : L&#39;objet est utilisé pour conserver le temps courant</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">default_timer</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">end_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.stop_execution_timing2">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.stop_execution_timing2">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_execution_timing2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calcule le temps total d&#39;exécution</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : L&#39;objet est utilisé pour conserver le temps courant</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">default_timer</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">end_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time2</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.timeout_handler">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.timeout_handler">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">timeout_handler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># https://www.programiz.com/python-programming/user-defined-exception</span>
+        <span class="k">raise</span> <span class="n">DebugHandlerTimeOutException</span><span class="p">(</span><span class="s2">&quot;Temps d&#39;exécution trop long!&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.print_timeout_exception">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.print_timeout_exception">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_timeout_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Méthode pour imprimer l&#39;info d&#39;une exception de temps d&#39;exécution trop grand</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Tout est compris dans l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;&gt;=&quot;</span> <span class="o">*</span> <span class="mi">75</span><span class="p">)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">cip:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">student_cip</span><span class="si">}</span><span class="s2"> ===&gt;&gt;&gt; TEMPS DE CALCUL TROP GRAND: plus de </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="si">}</span><span class="s2"> secondes&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug_info</span><span class="p">()</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;&lt;=&quot;</span> <span class="o">*</span> <span class="mi">75</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.print_general_exception">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.print_general_exception">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_general_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Méthode pour indiquer (imprimer) qu&#39;une exception arbitraire a eu lieu :</span>
+<span class="sd">            - L&#39;information au sujet de l&#39;exception (son type, la ligne de code où elle a eu lieu) sera imprimée</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            (void) : Tout est compris dans l&#39;objet</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Rien n&#39;est retourné</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">150</span><span class="p">)</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">cip:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">student_cip</span><span class="si">}</span><span class="s2"> ===&gt;&gt;&gt; ERREUR D&#39;EXÉCUTION&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_debug_info</span><span class="p">()</span>
+        <span class="n">PrintUtil</span><span class="o">.</span><span class="n">log_print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">150</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="DebugHandler.start_timeout">
+<a class="viewcode-back" href="../debug_handler_common.html#debug_handler_common.DebugHandler.start_timeout">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Démarre un décompte temporel (valeur en secondes dans timeout) :</span>
+<span class="sd">            - Détecte du code qui prend trop de temps à s&#39;exécuter</span>
+
+<span class="sd">        Args :</span>
+<span class="sd">            timeout (int) : La valeur du délai</span>
+
+<span class="sd">        Returns :</span>
+<span class="sd">            (void) : Au retour, l&#39;alarme est démarrée et sera déclenchée au besoin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># https://stackoverflow.com/questions/366682/how-to-limit-execution-time-of-a-function-call</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">signal</span>
+
+            <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout_handler</span><span class="p">)</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">return</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2018-2026 Frédéric Mailhot.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
