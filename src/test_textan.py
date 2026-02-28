@@ -179,7 +179,7 @@ class TestTextAn(ParsingClassTextAn):
             (void) : Au retour, tous les cips sont inclus dans la liste self.cips
         """
         cip_file = self.dir_code + "/" + self.etudiants
-        cip_list = open(cip_file, "r", encoding='utf8')
+        cip_list = open("etudiants_sol.txt", "r", encoding='utf8')
         lines = cip_list.readlines()
         for line in lines:
             if "#" in line:
