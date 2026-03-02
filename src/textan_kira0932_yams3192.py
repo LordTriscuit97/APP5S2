@@ -122,9 +122,16 @@ class TextAn(TextAnCommon):
         # Les lignes qui suivent ne servent qu'à éliminer un avertissement.
         # Il faut les retirer et les remplacer par du code fonctionnel
         norm_dict = {}
-        taille = self.get_vector_size(dict_de_ngrams)
+        somme_carres = sum(valeur ** 2 for valeur in dict_de_ngrams.values())
+        norme_l2 = math.sqrt(somme_carres)
+
+        if norme_l2 == 0:
+            return {}
+
+        # 2. Diviser chaque élément par cette norme
         for cle, valeur in dict_de_ngrams.items():
-            norm_dict[cle] = valeur / taille
+            norm_dict[cle] = valeur / norme_l2
+
         return norm_dict
 
     @staticmethod
@@ -188,9 +195,9 @@ class TextAn(TextAnCommon):
 
         #angle entre l'oeuvre et celles des auteurs
         l_resultats = []
-        self.normalize_vector(dict_oeuvre)
+        dict_oeuvre = self.normalize_vector(dict_oeuvre)
         for auteur in self.auteurs:
-            angle = self.dot_product_dict(dict_oeuvre, self.ngrams_auteurs[auteur])
+            angle = self.dot_product_dict(dict_oeuvre, self.normalized_ngrams_auteurs[auteur])
             l_resultats.append((auteur, angle))
 
         return l_resultats
@@ -266,51 +273,60 @@ class TextAn(TextAnCommon):
             (void) : ne retourne rien, le texte produit doit être écrit dans le fichier fourni,
                     comprenant à la fin une série de "taille" mots séparés par des espaces
         """
-        #optimisation de la recherche
+        #optimisation
         options_suivantes = {}
         taille_contexte = 1
 
         for ngram, freq in auteur_dict.items():
-            mots = ngram.split()
+            if len(ngram) > 1:
+                taille_contexte = len(ngram) - 1
+                contexte = ngram[:-1]
+                mot_cible = ngram[-1]
 
-            if len(mots) > 1:
-                taille_contexte = len(mots) - 1
-
-                #enlever le dernier mot de la liste et remettre ensemble
-                contexte = " ".join(mots[:-1])
-
-                mot_cible = mots[-1]
+                #création liste si le mot est nouveau
+                if contexte not in options_suivantes:
+                    options_suivantes[contexte] = []
 
                 options_suivantes[contexte].append((mot_cible, freq))
 
-        #génération du premier mot
+
+        #dictionnaire vide
+        if not options_suivantes:
+            return
+
+        #génératino premier mot
         l_ngrams = list(auteur_dict.keys())
         l_occurences = list(auteur_dict.values())
-        l_mots_gen = []
 
-        choix_rand = random.choices(l_ngrams, l_occurences, k=1)
+        #mot random
+        mot_choisi = random.choices(l_ngrams, weights=l_occurences, k=1)[0]
 
-        mot_choisi = choix_rand[0]
-        l_mots_gen.append(mot_choisi)
+        #tuple->liste
+        l_mots_gen = list(mot_choisi)
 
-        #génération chaine de markov
-        for i in range(taille):
-            mots_precedents = l_mots_gen[-taille_contexte:]
-            contexte_actuel = " ".join(mots_precedents)
+        #chaine de markov
+        while len(l_mots_gen) < taille:
+
+            contexte_actuel = tuple(l_mots_gen[-taille_contexte:])
 
             choix_possibles = options_suivantes.get(contexte_actuel, [])
 
+            #gestion quand un mot n'a pas de mot suivant (choisir nouveau)
+            if not choix_possibles:
+                nouveau_depart = random.choices(l_ngrams, weights=l_occurences, k=1)[0]
+                l_mots_gen.extend(list(nouveau_depart))
+                continue
+
+            #sélection nouveau mot
             mots_candidats = [choix[0] for choix in choix_possibles]
             poids = [choix[1] for choix in choix_possibles]
 
-            mot_choisi = random.choices(mots_candidats, weights=poids, k=1)[0]
+            nouveau_mot = random.choices(mots_candidats, weights=poids, k=1)[0]
+            l_mots_gen.append(nouveau_mot)
 
-            l_mots_gen.append(mot_choisi)
-
-        #print dans fichier
+        #écriture fichier
         phrase_finale = " ".join(l_mots_gen)
-        print(phrase_finale, to_file)
-
+        print(phrase_finale, file=to_file)
 
     def get_kth_element(self, auteur: str, k: int) -> list[list[str]]:
         """Après analyse des textes d'auteurs connus, retourner la liste des k-ièmes plus fréquents
@@ -450,10 +466,14 @@ class TextAn(TextAnCommon):
                 # On lui passe le dictionnaire vide pour qu'elle le remplisse
                 self.compute_ngram_stats(stats_auteur, oeuvre)
 
-            # 1. On stocke le dictionnaire brut
-            self.ngrams_auteurs[auteur] = stats_auteur
-            # 2. On stocke la version normalisée
-            self.normalized_ngrams_auteurs[auteur] = self.normalize_vector(stats_auteur)
+                # SOLUTION : On garde les nombres entiers pour la génération Markov
+                self.ngrams_auteurs[auteur] = stats_auteur.copy()
+
+                # SOLUTION : On transforme stats_auteur en vecteur unitaire (0 à 1)
+                self.normalize_vector(stats_auteur)
+
+                # On stocke ce vecteur propre pour l'identification
+                self.normalized_ngrams_auteurs[auteur] = stats_auteur
 
     def nettoyerTexte(self, texte) -> list:
         #normaliser le string
