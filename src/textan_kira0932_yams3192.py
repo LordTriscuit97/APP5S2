@@ -128,7 +128,7 @@ class TextAn(TextAnCommon):
         if norme_l2 == 0:
             return {}
 
-        # 2. Diviser chaque élément par cette norme
+        # Diviser chaque élément par la norme
         for cle, valeur in dict_de_ngrams.items():
             norm_dict[cle] = valeur / norme_l2
 
@@ -199,6 +199,7 @@ class TextAn(TextAnCommon):
         for auteur in self.auteurs:
             angle = self.dot_product_dict(dict_oeuvre, self.normalized_ngrams_auteurs[auteur])
             l_resultats.append((auteur, angle))
+
 
         return l_resultats
 
@@ -273,7 +274,7 @@ class TextAn(TextAnCommon):
             (void) : ne retourne rien, le texte produit doit être écrit dans le fichier fourni,
                     comprenant à la fin une série de "taille" mots séparés par des espaces
         """
-        #optimisation
+        #optimisation (triage)
         options_suivantes = {}
         taille_contexte = 1
 
@@ -350,7 +351,7 @@ class TextAn(TextAnCommon):
         # Transformer en liste de tuples
         liste_tuples = [(freq, gram) for freq, gram in dict_auteur.items()]
 
-        # On tri la liste dans l'ordre décroissant(le plus fréquent au début)
+        # On tri la liste dans l'ordre décroissant
         liste_tuples.sort(key=lambda x: x[0], reverse=True)
 
         if not liste_tuples or k > len(liste_tuples) or k <= 0:
@@ -463,16 +464,16 @@ class TextAn(TextAnCommon):
             oeuvres = self.get_aut_files(auteur)
 
             for oeuvre in oeuvres:
-                # On lui passe le dictionnaire vide pour qu'elle le remplisse
+                #ngram
                 self.compute_ngram_stats(stats_auteur, oeuvre)
 
-                # SOLUTION : On garde les nombres entiers pour la génération Markov
+                #stat auteur
                 self.ngrams_auteurs[auteur] = stats_auteur.copy()
 
-                # SOLUTION : On transforme stats_auteur en vecteur unitaire (0 à 1)
+                #vecteur unitaire
                 self.normalize_vector(stats_auteur)
 
-                # On stocke ce vecteur propre pour l'identification
+                #stockge du vecteur
                 self.normalized_ngrams_auteurs[auteur] = stats_auteur
 
     def nettoyerTexte(self, texte) -> list:
