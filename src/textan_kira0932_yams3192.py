@@ -281,8 +281,8 @@ class TextAn(TextAnCommon):
         for ngram, freq in auteur_dict.items():
             if len(ngram) > 1:
                 taille_contexte = len(ngram) - 1
-                contexte = ngram[:-1]
-                mot_cible = ngram[-1]
+                contexte = ngram[:-1] #tous les mots du ngram sauf le dernier
+                mot_cible = ngram[-1] #le dernier mot
 
                 #création liste si le mot est nouveau
                 if contexte not in options_suivantes:
@@ -471,10 +471,7 @@ class TextAn(TextAnCommon):
                 self.ngrams_auteurs[auteur] = stats_auteur.copy()
 
                 #vecteur unitaire
-                self.normalize_vector(stats_auteur)
-
-                #stockge du vecteur
-                self.normalized_ngrams_auteurs[auteur] = stats_auteur
+                self.normalized_ngrams_auteurs[auteur] = self.normalize_vector(stats_auteur)
 
     def nettoyerTexte(self, texte) -> list:
         #normaliser le string
